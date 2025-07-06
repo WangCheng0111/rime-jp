@@ -98,11 +98,21 @@ local function update_input(context, new_input)
   context:clear()
   if #new_input > 0 then
     context:push_input(new_input)
+    -- 如果有候选窗，立即设置为未选中状态
+    if context:has_menu() then
+      local composition = context.composition
+      if not composition:empty() then
+        local segment = composition:back()
+        segment.selected_index = -1
+      end
+    end
   end
 end
 
 -- 添加状态跟踪变量
 local waiting_for_next_char = false
+-- 添加变量跟踪最后选中的候选词，-1表示还没有按过空格
+local last_selected_index = -1
 
 -- 添加不允许[组合的字符集合
 local block_left_bracket_chars = {
@@ -119,8 +129,188 @@ local block_right_bracket_chars = {
 
 local function processor(key_event, env)
   local context = env.engine.context
-  local key_repr = key_event:repr()  -- 不使用string.lower，保持原始按键名
+  local key_repr = key_event:repr()
+  
+  -- 初始化候选窗状态
+  if context:has_menu() and last_selected_index == -1 then
+    local composition = context.composition
+    if not composition:empty() then
+      local segment = composition:back()
+      segment.selected_index = -1  -- 设置为-1表示未选中任何候选词
+    end
+  end
+
+  -- 处理Shift+Space键
+  if key_repr == "Shift+space" then
+    if context:has_menu() then
+      local composition = context.composition
+      if not composition:empty() then
+        local segment = composition:back()
+        local menu = segment.menu
+        local candidate_count = menu:candidate_count()
+        
+        -- 如果当前未选中任何候选词，从最后一个开始
+        if segment.selected_index == -1 then
+          segment.selected_index = candidate_count - 1
+          last_selected_index = candidate_count - 1
+        -- 如果当前是第一个候选词，选择最后一个
+        elseif segment.selected_index == 0 then
+          segment.selected_index = candidate_count - 1
+          last_selected_index = candidate_count - 1
+        else
+          -- 否则选择前一个候选词
+          segment.selected_index = segment.selected_index - 1
+          last_selected_index = segment.selected_index
+        end
+        return 1
+      end
+    end
+  end
+  
+  -- 处理回车键
+  if key_repr == "Return" then
+    -- 如果有选中的候选词，直接上屏
+    if last_selected_index >= 0 and context:has_menu() then
+      local composition = context.composition
+      if not composition:empty() then
+        local segment = composition:back()
+        local menu = segment.menu
+        -- 获取选中的候选词并上屏
+        local cand = menu:get_candidate_at(last_selected_index)
+        if cand then
+          env.engine:commit_text(cand.text)
+          context:clear()
+          -- 重置选中的候选词索引
+          last_selected_index = -1
+          return 1
+        end
+      end
+    end
+  end
+  
   local input = context.input or ""
+  
+  -- 处理Tab键的特殊情况
+  if key_repr == "Tab" then
+    -- 如果有候选框且有选中的候选词，转换选中的候选词
+    if context:has_menu() and last_selected_index >= 0 then
+      local composition = context.composition
+      if not composition:empty() then
+        local segment = composition:back()
+        local menu = segment.menu
+        local cand = menu:get_candidate_at(last_selected_index)
+        if cand then
+          -- 先检查是否有需要转换的平假名
+          local text = cand.text
+          local has_hiragana = false
+          for pos, code in utf8.codes(text) do
+            local char = utf8.char(code)
+            if hiragana_to_katakana[char] then
+              has_hiragana = true
+              break
+            end
+          end
+          
+          -- 只有在有平假名需要转换时才进行转换
+          if has_hiragana then
+            local result = ""
+            for pos, code in utf8.codes(text) do
+              local char = utf8.char(code)
+              result = result .. (hiragana_to_katakana[char] or char)
+            end
+            env.engine:commit_text(result)
+            context:clear()
+            -- 重置选中的候选词索引
+            last_selected_index = -1
+            return 1
+          end
+        end
+      end
+      -- 如果选中的候选词中没有平假名可转换，屏蔽tab键输出
+      return 1
+    end
+    
+    -- 如果编码区有内容，处理平假名到片假名的转换
+    if utf8.len(input) > 0 then
+      -- 先检查是否有需要转换的平假名
+      local has_hiragana = false
+      for pos, code in utf8.codes(input) do
+        local char = utf8.char(code)
+        if hiragana_to_katakana[char] then
+          has_hiragana = true
+          break
+        end
+      end
+      
+      -- 只有在有平假名需要转换时才进行转换
+      if has_hiragana then
+        local result = ""
+        for pos, code in utf8.codes(input) do
+          local char = utf8.char(code)
+          result = result .. (hiragana_to_katakana[char] or char)
+        end
+        env.engine:commit_text(result)
+        context:clear()
+        return 1
+      end
+    end
+    
+    -- 如果编码区为空或没有可转换的平假名，保持tab原输出
+    return kNoop
+  end
+  
+  -- 处理空格键
+  if key_repr == "space" then
+    if context:has_menu() then
+      local composition = context.composition
+      if not composition:empty() then
+        local segment = composition:back()
+        local menu = segment.menu
+        local candidate_count = menu:candidate_count()
+        
+        -- 如果未选中任何候选词，选中第一个
+        if segment.selected_index == -1 then
+          segment.selected_index = 0
+          last_selected_index = 0
+          return 1
+        end
+        
+        -- 已经选中某个候选词，切换到下一个
+        last_selected_index = last_selected_index + 1
+        if last_selected_index >= candidate_count then
+          last_selected_index = 0
+        end
+        segment.selected_index = last_selected_index
+        return 1
+      end
+    end
+  end
+  
+  -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
+  if not key_event:release() and 
+     not key_event:ctrl() and 
+     not key_event:alt() and 
+     not key_event:caps() and
+     key_repr ~= "space" and
+     key_repr ~= "Shift+BackSpace" and
+     key_repr ~= "backspace" then
+    -- 如果有选中的候选词且有新的输入，先上屏选中的候选词
+    if last_selected_index >= 0 and context:has_menu() then
+      local composition = context.composition
+      if not composition:empty() then
+        local segment = composition:back()
+        local menu = segment.menu
+        -- 获取选中的候选词并上屏
+        local cand = menu:get_candidate_at(last_selected_index)
+        if cand then
+          env.engine:commit_text(cand.text)
+          context:clear()
+        end
+      end
+    end
+    -- 重置选中的候选词索引
+    last_selected_index = -1
+  end
   
   -- 处理CapsLock特殊功能（暂时禁用）
   --[[
@@ -163,39 +353,6 @@ local function processor(key_event, env)
   
   -- 现在对按键名称进行小写化处理
   key_repr = string.lower(key_repr)
-  
-  -- 处理Tab键的特殊情况
-  if key_repr == "tab" then
-    if utf8.len(input) > 0 then
-      -- 检查并替换平假名为片假名
-      local has_hiragana = false
-      local result = ""
-      local chars = {}
-      
-      -- 先将输入分解为字符数组
-      for pos, code in utf8.codes(input) do
-        table.insert(chars, utf8.char(code))
-      end
-      
-      -- 检查并替换
-      for _, char in ipairs(chars) do
-        local katakana = hiragana_to_katakana[char]
-        if katakana then
-          result = result .. katakana
-          has_hiragana = true
-        else
-          result = result .. char
-        end
-      end
-      
-      -- 如果有平假名被替换，上屏修改后的内容
-      if has_hiragana then
-        env.engine:commit_text(result)
-        context:clear()
-        return 1
-      end
-    end
-  end
   
   -- 处理中括号的特殊情况
   if key_repr == "bracketleft" or key_repr == "bracketright" then
