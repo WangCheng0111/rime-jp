@@ -1,0 +1,19 @@
+# Rime's punctuation and symbols
+# encoding: utf-8
+#
+# Usage: patch your Rime schema to enable /X symbols
+
+config_version: '1.6'
+
+
+punctuator:
+  half_shape:
+    '<' : { commit: ！ }
+    '>' : { commit: ？ }
+    "{" : 玖
+    "}" : 零
+    " ": { commit: ' ' }
+    ':' : { commit: ： }
+
+  full_shape:
+    " ": { commit: ' ' }
