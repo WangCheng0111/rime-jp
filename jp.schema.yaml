@@ -4,6 +4,7 @@
 schema:
   schema_id: jp
   name: 日文
+  icon: kagiroi.ico
   version: "2025.06.21"
   author:
     - 王城
@@ -81,3 +82,6 @@ ascii_composer:
     Control_R: noop
     Shift_L: noop
     Shift_R: noop
+style:
+  horizontal: true
+  preedit_type: preview

@@ -305,6 +305,7 @@ local function processor(key_event, env)
         if cand then
           env.engine:commit_text(cand.text)
           context:clear()
+          input = ""  -- 清空input变量
         end
       end
     end
