@@ -242,11 +242,11 @@ local function processor(key_event, env)
   if key_repr == "Shift+space" then
     local segment, menu = get_candidate_menu(context)
     if segment and menu then
-      local candidate_count = menu:candidate_count()
+        local candidate_count = menu:candidate_count()
       if segment.selected_index == -1 or segment.selected_index == 0 then
-        segment.selected_index = candidate_count - 1
-      else
-        segment.selected_index = segment.selected_index - 1
+          segment.selected_index = candidate_count - 1
+        else
+          segment.selected_index = segment.selected_index - 1
       end
       last_selected_index = segment.selected_index
       return 1
@@ -256,7 +256,7 @@ local function processor(key_event, env)
   -- 处理回车键
   if key_repr == "Return" then
     if commit_selected_candidate(context, env) then
-      return 1
+          return 1
     end
   end
   
@@ -269,20 +269,21 @@ local function processor(key_event, env)
   if key_repr == "space" then
     local segment, menu = get_candidate_menu(context)
     if segment and menu then
-      local candidate_count = menu:candidate_count()
-      if segment.selected_index == -1 then
-        segment.selected_index = 0
+        local candidate_count = menu:candidate_count()
+        if segment.selected_index == -1 then
+          segment.selected_index = 0
       else
         segment.selected_index = (segment.selected_index + 1) % candidate_count
       end
       last_selected_index = segment.selected_index
-      return 1
+        return 1
     end
   end
   
-  -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
+    -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
   if not (key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() or
-          key_repr == "space" or key_repr == "Shift+BackSpace" or key_repr == "backspace") then
+          key_repr == "space" or key_repr == "Shift+BackSpace" or key_repr == "backspace" or
+          key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R") then
     if commit_selected_candidate(context, env) then
       input = ""  -- 清空input变量
     end
