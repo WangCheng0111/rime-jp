@@ -1,5 +1,5 @@
 -- special_key_processor.lua
--- 用于处理分号、单引号、小写z和数字0-9的特殊行为
+-- 用于处理分号、斜杠键、小写z和数字0-9的特殊行为
 
 -- 主处理函数
 local function special_key_processor(key_event, env)
@@ -49,8 +49,8 @@ local function special_key_processor(key_event, env)
     end
   end
   
-  -- 仅处理分号和单引号
-  if key_repr ~= "semicolon" and key_repr ~= "apostrophe" then
+  -- 仅处理分号和斜杠键
+  if key_repr ~= "semicolon" and key_repr ~= "slash" then
     return kNoop  -- 继续处理
   end
   
@@ -69,26 +69,26 @@ local function special_key_processor(key_event, env)
     end
   end
   
-  -- 处理分号键和引号键的特殊逻辑
-  if key_repr == "semicolon" or key_repr == "apostrophe" then
+  -- 处理分号键和斜杠键的特殊逻辑
+  if key_repr == "semicolon" or key_repr == "slash" then
     if candidate_count == 1 then
-      -- 只有一个候选时，选择第一个候选并上屏，然后允许输出分号或引号本身
+      -- 只有一个候选时，选择第一个候选并上屏，然后允许输出分号或斜杠本身
       context:select(0)  -- 索引从0开始，0表示第一个候选
       context:commit()
-      return kNoop  -- 继续处理，允许输出分号或引号本身
-    elseif candidate_count == 2 then
-      if key_repr == "semicolon" then
-        -- 两个候选时，分号选择第二个候选
-        context:select(1)  -- 索引从0开始，1表示第二个候选
-        context:commit()
-        if not context:has_menu() then
-          return 1  -- 屏蔽分号本身的输出
-        end
-      else  -- apostrophe
-        -- 两个候选时，单引号保持原输出
-        context:select(0)  -- 索引从0开始，0表示第一个候选
-        context:commit()
-        return kNoop  -- 继续处理，允许输出单引号本身
+              return kNoop  -- 继续处理，允许输出分号或斜杠本身
+      elseif candidate_count == 2 then
+        if key_repr == "semicolon" then
+          -- 两个候选时，分号选择第二个候选
+          context:select(1)  -- 索引从0开始，1表示第二个候选
+          context:commit()
+          if not context:has_menu() then
+            return 1  -- 屏蔽分号本身的输出
+          end
+        else  -- slash
+          -- 两个候选时，斜杠键保持原输出
+          context:select(0)  -- 索引从0开始，0表示第一个候选
+          context:commit()
+          return kNoop  -- 继续处理，允许输出斜杠键本身
       end
     else  -- candidate_count >= 3
       if key_repr == "semicolon" then
@@ -98,13 +98,13 @@ local function special_key_processor(key_event, env)
         if not context:has_menu() then
           return 1  -- 屏蔽分号本身的输出
         end
-      else  -- apostrophe
-        -- 三个及以上候选时，单引号选择第三个候选
-        context:select(2)  -- 索引从0开始，2表示第三个候选
-        context:commit()
-        if not context:has_menu() then
-          return 1  -- 屏蔽单引号本身的输出
-        end
+              else  -- slash
+          -- 三个及以上候选时，斜杠键选择第三个候选
+          context:select(2)  -- 索引从0开始，2表示第三个候选
+          context:commit()
+          if not context:has_menu() then
+            return 1  -- 屏蔽斜杠键本身的输出
+          end
       end
     end
   end
