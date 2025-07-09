@@ -1,0 +1,96 @@
+schema:
+  schema_id: sapphire
+  author:
+    - 秋风
+  description: |
+    蓝宝石第三代
+  name: "蓝宝石第三代"
+  version: "GB18030"
+
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 英文 ]
+  - name: zh_trad
+    reset: 0
+    states: [ 简体, 繁体 ]
+  - name: full_shape
+    reset: 0
+    states: [ 半角, 全角 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - lua_processor@special_key_processor
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+  filters:
+    - uniquifier
+
+
+speller:
+  auto_clear: max_length
+  auto_select: true
+  max_code_length: 4
+  # auto_select_pattern: ^;\w+|^\w{4}$
+
+
+translator:
+  dictionary: sapphire
+  enable_charset_filter: true
+  enable_completion: true
+  enable_encoder: false
+  enable_sentence: false
+  encode_commit_history: true
+  max_phrase_length: 4
+  enable_user_dict: false
+  # 禁用编码补全（关闭实时候选）
+  enable_completion: false
+
+punctuator:
+  import_preset: mysymbols
+
+key_binder:
+  import_preset: default
+  bindings:
+    #- { accept: 2, send: exclam, when: has_menu }
+    - { accept: F7, select: KappaJP, when: always }
+    - { accept: comma, when: has_menu, send: comma }  # 逗号不触发上一页
+    - { accept: period, when: has_menu, send: period } # 句号不触发下一页
+
+recognizer:
+  import_preset: default
+  patterns:
+    uppercase: "" #中文状态大写锁定直接上屏
+
+ascii_composer:
+  switch_key:
+    Caps_Lock: noop
+    Control_L: commit_code
+    Control_R: noop
+    Eisu_toggle: clear
+    Shift_L: noop
+    Shift_R: commit_text
+
+
+menu:
+  page_size: 3
+
+style:
+  horizontal: true
