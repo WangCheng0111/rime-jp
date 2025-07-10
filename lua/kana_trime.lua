@@ -9,7 +9,7 @@ local key_mappings = {
   j = "ま", k = "の", l = "り", m = "も", n = "み", o = "ら", p = "せ", q = "た", r = "す",
   s = "と", t = "か", u = "な", v = "ひ", w = "て", x = "さ", y = "ん", z = "つ",
   -- 大写字母映射（原shift组合键）
-  Z = "っ", E = "ぃ", S = "って",
+  Z = "っ", E = "ぃ", S = "っと",
   -- 数字映射
   ["1"] = "ぬ", ["2"] = "ふ", ["3"] = "あ", ["4"] = "う", ["5"] = "え", ["6"] = "お",
   ["7"] = "や", ["8"] = "ゆ", ["9"] = "よ", ["0"] = "わ",
@@ -24,7 +24,42 @@ local key_mappings = {
   ["Shift+7"] = "ゃ",     -- Shift+&
   ["Shift+8"] = "ゅ",     -- Shift+*
   ["Shift+9"] = "ょ",     -- Shift+(
-  ["Shift+0"] = "を"      -- Shift+)
+  ["Shift+0"] = "を",     -- Shift+)
+  -- 新增的Shift组合键映射
+  ["Shift+grave"] = "っろ",        -- Shift+`
+  ["Shift+exclam"] = "っぬ",       -- Shift+!
+  ["Shift+at"] = "っふ",           -- Shift+@
+  ["Shift+equal"] = "っへ",        -- Shift+=
+  Q = "った",            -- Shift+Q
+  W = "って",            -- Shift+W
+  R = "っす",            -- Shift+R
+  T = "っか",            -- Shift+T
+  Y = "っん",            -- Shift+Y
+  U = "っな",            -- Shift+U
+  I = "っに",            -- Shift+I
+  O = "っら",            -- Shift+O
+  P = "っせ",            -- Shift+P
+  ["Shift+backslash"] = "っむ",    -- Shift+\
+  A = "っち",            -- Shift+A
+  D = "っし",            -- Shift+D
+  F = "っは",            -- Shift+F
+  G = "っき",            -- Shift+G
+  H = "っく",            -- Shift+H
+  J = "っま",            -- Shift+J
+  K = "っの",            -- Shift+K
+  L = "っり",            -- Shift+L
+  ["Shift+semicolon"] = "っれ",    -- Shift+;
+  ["Shift+apostrophe"] = "っけ",   -- Shift+'
+  X = "っさ",            -- Shift+X
+  C = "っそ",            -- Shift+C
+  V = "っひ",            -- Shift+V
+  B = "っこ",            -- Shift+B
+  N = "っみ",            -- Shift+N
+  M = "っも",            -- Shift+M
+  ["Shift+comma"] = "っね",        -- Shift+,
+  ["Shift+period"] = "っる",       -- Shift+.
+  ["Shift+slash"] = "っめ",        -- Shift+/
+  ["Shift+minus"] = "ー"           -- Shift+- (减号键的长音符)
 }
 
 -- 两字符组合映射表

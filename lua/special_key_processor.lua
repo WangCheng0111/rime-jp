@@ -63,10 +63,8 @@ local function special_key_processor(key_event, env)
   -- 处理分号键和引号键的特殊逻辑
   if key_repr == "semicolon" or key_repr == "apostrophe" then
     if candidate_count == 1 then
-      -- 只有一个候选时，选择第一个候选并上屏，然后允许输出分号或引号本身
-      context:select(0)  -- 索引从0开始，0表示第一个候选
-      context:commit()
-      return kNoop  -- 继续处理，允许输出分号或引号本身
+      -- 只有一个候选时，直接让系统处理（自动上屏第一候选+输出标点）
+      return kNoop
     elseif candidate_count == 2 then
       if key_repr == "semicolon" then
         -- 两个候选时，分号选择第二个候选
@@ -76,10 +74,8 @@ local function special_key_processor(key_event, env)
           return 1  -- 屏蔽分号本身的输出
         end
       else  -- apostrophe
-        -- 两个候选时，单引号保持原输出
-        context:select(0)  -- 索引从0开始，0表示第一个候选
-        context:commit()
-        return kNoop  -- 继续处理，允许输出单引号本身
+        -- 两个候选时，单引号直接让系统处理（自动上屏第一候选+输出标点）
+        return kNoop
       end
     else  -- candidate_count >= 3
       if key_repr == "semicolon" then

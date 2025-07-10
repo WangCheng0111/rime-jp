@@ -3,16 +3,36 @@
 
 -- 主处理函数
 local function special_key_processor(key_event, env)
-  -- 忽略控制键、释放事件等
-  if key_event:ctrl() or key_event:alt() or key_event:release() or key_event:shift() or key_event:caps() then
+  -- 忽略控制键、释放事件等（但允许shift组合键通过）
+  if key_event:ctrl() or key_event:alt() or key_event:release() or key_event:caps() then
     return kNoop
   end
   
   local context = env.engine.context
-  local key_repr = string.lower(key_event:repr())
+  local key_repr = key_event:repr()
+  
+  -- 处理Shift组合键（如Shift+D等）
+  if key_event:shift() and context:has_menu() then
+    -- 获取第一个候选词的文本并直接提交（适配Trime）
+    local composition = context.composition
+    if composition and not composition:empty() then
+      local segment = composition:back()
+      if segment and segment.menu then
+        local candidate = segment.menu:get_candidate_at(0)
+        if candidate then
+          env.engine:commit_text(candidate.text)
+          context:clear()
+          -- 让Shift组合键正常处理，输出对应的大写字母或符号
+          return kNoop
+        end
+      end
+    end
+  end
+  
+  local key_repr_lower = string.lower(key_repr)
   
   -- 检查是否为数字键0-9
-  local is_number = key_repr:match("^[0-9]$")
+  local is_number = key_repr_lower:match("^[0-9]$")
   if is_number then
     -- 如果有候选菜单，则顶屏
     if context:has_menu() then
@@ -26,7 +46,7 @@ local function special_key_processor(key_event, env)
             env.engine:commit_text(candidate.text)
             context:clear()
             -- 然后输出数字键本身
-            env.engine:commit_text(key_repr)
+            env.engine:commit_text(key_repr_lower)
             return 1  -- 屏蔽原始数字键输出，因为我们已经手动输出了
           end
         end
@@ -36,13 +56,22 @@ local function special_key_processor(key_event, env)
   end
   
   -- 检查是否为小写z键
-  if key_repr == "z" then
+  if key_repr_lower == "z" then
     -- 如果有候选菜单，则顶屏
     if context:has_menu() then
-      -- 选择第一个候选并上屏
-      context:select(0)  -- 索引从0开始，0表示第一个候选
-      context:commit()
-      return kNoop  -- 继续处理，允许输出z键本身
+      -- 获取第一个候选词的文本并直接提交（适配Trime）
+      local composition = context.composition
+      if composition and not composition:empty() then
+        local segment = composition:back()
+        if segment and segment.menu then
+          local candidate = segment.menu:get_candidate_at(0)
+          if candidate then
+            env.engine:commit_text(candidate.text)
+            context:clear()
+            return kNoop  -- 继续处理，允许输出z键本身
+          end
+        end
+      end
     else
       -- 如果没有候选菜单，保持原样
       return kNoop  -- 继续处理
@@ -50,7 +79,7 @@ local function special_key_processor(key_event, env)
   end
   
   -- 仅处理分号和斜杠键
-  if key_repr ~= "semicolon" and key_repr ~= "slash" then
+  if key_repr_lower ~= "semicolon" and key_repr_lower ~= "slash" then
     return kNoop  -- 继续处理
   end
   
@@ -70,41 +99,31 @@ local function special_key_processor(key_event, env)
   end
   
   -- 处理分号键和斜杠键的特殊逻辑
-  if key_repr == "semicolon" or key_repr == "slash" then
+  if key_repr_lower == "semicolon" or key_repr_lower == "slash" then
     if candidate_count == 1 then
-      -- 只有一个候选时，选择第一个候选并上屏，然后允许输出分号或斜杠本身
-      context:select(0)  -- 索引从0开始，0表示第一个候选
-      context:commit()
-              return kNoop  -- 继续处理，允许输出分号或斜杠本身
-      elseif candidate_count == 2 then
-        if key_repr == "semicolon" then
-          -- 两个候选时，分号选择第二个候选
-          context:select(1)  -- 索引从0开始，1表示第二个候选
-          context:commit()
-          if not context:has_menu() then
-            return 1  -- 屏蔽分号本身的输出
-          end
-        else  -- slash
-          -- 两个候选时，斜杠键保持原输出
-          context:select(0)  -- 索引从0开始，0表示第一个候选
-          context:commit()
-          return kNoop  -- 继续处理，允许输出斜杠键本身
+      -- 只有一个候选时，让系统自动处理：顶屏第一候选+输出分号/斜杠
+      return kNoop
+    elseif candidate_count == 2 then
+      if key_repr_lower == "semicolon" then
+        -- 两个候选时，分号选择第二个候选
+        context:select(1)  -- 索引从0开始，1表示第二个候选
+        context:commit()
+        return 1  -- 屏蔽分号本身的输出
+      else  -- slash
+        -- 两个候选时，斜杠键让系统自动处理：顶屏第一候选+输出斜杠
+        return kNoop
       end
     else  -- candidate_count >= 3
-      if key_repr == "semicolon" then
+      if key_repr_lower == "semicolon" then
         -- 三个及以上候选时，分号选择第二个候选
         context:select(1)  -- 索引从0开始，1表示第二个候选
         context:commit()
-        if not context:has_menu() then
-          return 1  -- 屏蔽分号本身的输出
-        end
-              else  -- slash
-          -- 三个及以上候选时，斜杠键选择第三个候选
-          context:select(2)  -- 索引从0开始，2表示第三个候选
-          context:commit()
-          if not context:has_menu() then
-            return 1  -- 屏蔽斜杠键本身的输出
-          end
+        return 1  -- 屏蔽分号本身的输出
+      else  -- slash
+        -- 三个及以上候选时，斜杠键选择第三个候选
+        context:select(2)  -- 索引从0开始，2表示第三个候选
+        context:commit()
+        return 1  -- 屏蔽斜杠键本身的输出
       end
     end
   end

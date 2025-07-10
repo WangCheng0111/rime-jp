@@ -10,10 +10,10 @@ punctuator:
   half_shape:
     '<' : { commit: ！ }
     '>' : { commit: ？ }
-    "{" : 玖
-    "}" : 零
     " ": { commit: ' ' }
     ':' : { commit: ： }
+    '{' : { commit: 「 }
+    '}' : { commit: 」 }
 
   full_shape:
     " ": { commit: ' ' }

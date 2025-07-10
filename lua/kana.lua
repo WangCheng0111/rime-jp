@@ -28,7 +28,42 @@ local shift_key_mappings = {
   ["Shift+parenright"] = "を",     -- Shift+)
   ["Shift+Z"] = "っ",              -- Shift+Z
   ["Shift+E"] = "ぃ",              -- Shift+E
-  ["Shift+S"] = "って"             -- Shift+S
+  -- 新增的映射
+  ["Shift+asciitilde"] = "っろ",   -- Shift+~ (Shift+grave)
+  ["Shift+exclam"] = "っぬ",       -- Shift+!
+  ["Shift+at"] = "っふ",           -- Shift+@
+  ["Shift+plus"] = "っへ",         -- Shift++ (Shift+equal)
+  ["Shift+Q"] = "った",            -- Shift+Q
+  ["Shift+W"] = "って",            -- Shift+W
+  ["Shift+R"] = "っす",            -- Shift+R
+  ["Shift+T"] = "っか",            -- Shift+T
+  ["Shift+Y"] = "っん",            -- Shift+Y
+  ["Shift+U"] = "っな",            -- Shift+U
+  ["Shift+I"] = "っに",            -- Shift+I
+  ["Shift+O"] = "っら",            -- Shift+O
+  ["Shift+P"] = "っせ",            -- Shift+P
+  ["Shift+bar"] = "っむ",          -- Shift+| (Shift+backslash)
+  ["Shift+A"] = "っち",            -- Shift+A
+  ["Shift+S"] = "っと",            -- Shift+S
+  ["Shift+D"] = "っし",            -- Shift+D
+  ["Shift+F"] = "っは",            -- Shift+F
+  ["Shift+G"] = "っき",            -- Shift+G
+  ["Shift+H"] = "っく",            -- Shift+H
+  ["Shift+J"] = "っま",            -- Shift+J
+  ["Shift+K"] = "っの",            -- Shift+K
+  ["Shift+L"] = "っり",            -- Shift+L
+  ["Shift+colon"] = "っれ",        -- Shift+: (Shift+semicolon)
+  ["Shift+quotedbl"] = "っけ",     -- Shift+" (Shift+apostrophe)
+  ["Shift+X"] = "っさ",            -- Shift+X
+  ["Shift+C"] = "っそ",            -- Shift+C
+  ["Shift+V"] = "っひ",            -- Shift+V
+  ["Shift+B"] = "っこ",            -- Shift+B
+  ["Shift+N"] = "っみ",            -- Shift+N
+  ["Shift+M"] = "っも",            -- Shift+M
+  ["Shift+less"] = "っね",         -- Shift+< (Shift+comma)
+  ["Shift+greater"] = "っる",      -- Shift+> (Shift+period)
+  ["Shift+question"] = "っめ",     -- Shift+? (Shift+slash)
+  ["Shift+underscore"] = "ー"       -- Shift+_ (Shift+minus)
 }
 
 -- 两字符组合映射表
