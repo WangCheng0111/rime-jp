@@ -52,26 +52,17 @@ local function special_key_processor(key_event, env)
         end
       end
     end
-    return kNoop  -- 如果没有候选或其他情况，继续正常处理
+    return kNoop
   end
   
-  -- 检查是否为小写z键
+  -- 检查是否为小写z键（保持原有逻辑不变）
   if key_repr_lower == "z" then
     -- 如果有候选菜单，则顶屏
     if context:has_menu() then
-      -- 获取第一个候选词的文本并直接提交（适配Trime）
-      local composition = context.composition
-      if composition and not composition:empty() then
-        local segment = composition:back()
-        if segment and segment.menu then
-          local candidate = segment.menu:get_candidate_at(0)
-          if candidate then
-            env.engine:commit_text(candidate.text)
-            context:clear()
-            return kNoop  -- 继续处理，允许输出z键本身
-          end
-        end
-      end
+      -- 选择第一个候选并上屏
+      context:select(0)  -- 索引从0开始，0表示第一个候选
+      context:commit()
+      return kNoop  -- 继续处理，允许输出z键本身
     else
       -- 如果没有候选菜单，保持原样
       return kNoop  -- 继续处理
@@ -80,12 +71,12 @@ local function special_key_processor(key_event, env)
   
   -- 仅处理分号和斜杠键
   if key_repr_lower ~= "semicolon" and key_repr_lower ~= "slash" then
-    return kNoop  -- 继续处理
+    return kNoop
   end
   
   -- 如果没有候选菜单，继续正常处理
   if not context:has_menu() then
-    return kNoop  -- 继续处理
+    return kNoop
   end
   
   -- 获取候选数量
@@ -101,16 +92,18 @@ local function special_key_processor(key_event, env)
   -- 处理分号键和斜杠键的特殊逻辑
   if key_repr_lower == "semicolon" or key_repr_lower == "slash" then
     if candidate_count == 1 then
-      -- 只有一个候选时，让系统自动处理：顶屏第一候选+输出分号/斜杠
+      -- 只有一个候选时，使用系统默认行为
       return kNoop
     elseif candidate_count == 2 then
       if key_repr_lower == "semicolon" then
         -- 两个候选时，分号选择第二个候选
         context:select(1)  -- 索引从0开始，1表示第二个候选
         context:commit()
-        return 1  -- 屏蔽分号本身的输出
+        if not context:has_menu() then
+          return 1  -- 屏蔽分号本身的输出
+        end
       else  -- slash
-        -- 两个候选时，斜杠键让系统自动处理：顶屏第一候选+输出斜杠
+        -- 两个候选时，斜杠键使用系统默认行为
         return kNoop
       end
     else  -- candidate_count >= 3
@@ -118,17 +111,21 @@ local function special_key_processor(key_event, env)
         -- 三个及以上候选时，分号选择第二个候选
         context:select(1)  -- 索引从0开始，1表示第二个候选
         context:commit()
-        return 1  -- 屏蔽分号本身的输出
+        if not context:has_menu() then
+          return 1  -- 屏蔽分号本身的输出
+        end
       else  -- slash
         -- 三个及以上候选时，斜杠键选择第三个候选
         context:select(2)  -- 索引从0开始，2表示第三个候选
         context:commit()
-        return 1  -- 屏蔽斜杠键本身的输出
+        if not context:has_menu() then
+          return 1  -- 屏蔽斜杠键本身的输出
+        end
       end
     end
   end
   
-  return kNoop  -- 继续处理
+  return kNoop
 end
 
 return special_key_processor 
