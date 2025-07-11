@@ -278,10 +278,19 @@ local function processor(key_event, env)
     local segment, menu = get_candidate_menu(context)
     if segment and menu then
         local candidate_count = menu:candidate_count()
+      -- 如果只有一个候选词，直接上屏
+      if candidate_count == 1 then
+        local cand = menu:get_candidate_at(0)
+        env.engine:commit_text(cand.text)
+        context:clear()
+        last_selected_index = -1
+        return 1
+      end
+      -- 多个候选词时保持原有行为
       if segment.selected_index == -1 or segment.selected_index == 0 then
-          segment.selected_index = candidate_count - 1
-        else
-          segment.selected_index = segment.selected_index - 1
+        segment.selected_index = candidate_count - 1
+      else
+        segment.selected_index = segment.selected_index - 1
       end
       last_selected_index = segment.selected_index
       return 1
@@ -304,7 +313,16 @@ local function processor(key_event, env)
   if key_repr == "space" then
     local segment, menu = get_candidate_menu(context)
     if segment and menu then
-        local candidate_count = menu:candidate_count()
+      local candidate_count = menu:candidate_count()
+      -- 如果只有一个候选词，直接上屏
+      if candidate_count == 1 then
+        local cand = menu:get_candidate_at(0)
+        env.engine:commit_text(cand.text)
+        context:clear()
+        last_selected_index = -1
+        return 1
+      end
+      -- 多个候选词时保持原有行为
         if segment.selected_index == -1 then
           segment.selected_index = 0
       else
@@ -315,12 +333,13 @@ local function processor(key_event, env)
     end
   end
   
-    -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
+  -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
   if not (key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() or
           key_repr == "space" or key_repr == "Shift+BackSpace" or key_repr == "backspace" or
-          key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R") then
+          key_repr == "BackSpace" or key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R" or 
+          key_repr == "Caps_Lock") then
     if commit_selected_candidate(context, env) then
-      input = ""  -- 清空input变量
+          input = ""  -- 清空input变量
     end
     last_selected_index = -1
   end
