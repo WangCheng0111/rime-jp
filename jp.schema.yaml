@@ -83,6 +83,6 @@ ascii_composer:
 style:
   horizontal: true
   preedit_type: preview
-  layout:
-    margin_x : -1
-    margin_y : -1
+  #layout:
+    #margin_x : -1
+    #margin_y : -1

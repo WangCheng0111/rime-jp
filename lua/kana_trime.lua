@@ -114,14 +114,32 @@ local block_right_bracket_chars = {
 -- 跟踪最后选中的候选词，-1表示还没有按过空格
 local last_selected_index = -1
 
+-- 常量定义
+local IGNORED_KEYS = {
+  ["space"] = true,
+  ["Shift+BackSpace"] = true,
+  ["backspace"] = true,
+  ["BackSpace"] = true,
+  ["Shift+Shift_L"] = true,
+  ["Shift+Shift_R"] = true,
+  ["Caps_Lock"] = true
+}
+
+-- 常量定义
+local BRACKET_KEYS = {
+  ["bracketleft"] = true,
+  ["bracketright"] = true
+}
+
 -- 获取UTF-8字符串的最后一个字符
 local function get_last_char(input)
   if utf8.len(input) == 0 then return "" end
-  local last_char = ""
+  local last_pos = 0
+  local last_code = 0
   for pos, code in utf8.codes(input) do
-    last_char = utf8.char(code)
+    last_pos, last_code = pos, code
   end
-  return last_char
+  return utf8.char(last_code)
 end
 
 -- 删除UTF-8字符串的最后一个字符
@@ -129,15 +147,11 @@ local function remove_last_char(input)
   local char_count = utf8.len(input)
   if char_count <= 1 then return "" end
   
-  local result = ""
-  local i = 0
-  for pos, code in utf8.codes(input) do
-    i = i + 1
-    if i < char_count then
-      result = result .. utf8.char(code)
-    end
+  local last_pos = 0
+  for pos, _ in utf8.codes(input) do
+    last_pos = pos
   end
-  return result
+  return string.sub(input, 1, last_pos - 1)
 end
 
 -- 更新编码区内容
@@ -149,8 +163,7 @@ local function update_input(context, new_input)
     if context:has_menu() then
       local composition = context.composition
       if not composition:empty() then
-        local segment = composition:back()
-        segment.selected_index = -1
+        composition:back().selected_index = -1
       end
     end
   end
@@ -158,9 +171,8 @@ end
 
 -- 检查文本中是否包含平假名
 local function has_hiragana(text)
-  for pos, code in utf8.codes(text) do
-    local char = utf8.char(code)
-    if hiragana_to_katakana[char] then
+  for _, code in utf8.codes(text) do
+    if hiragana_to_katakana[utf8.char(code)] then
       return true
     end
   end
@@ -170,7 +182,7 @@ end
 -- 将平假名转换为片假名
 local function convert_to_katakana(text)
   local result = ""
-  for pos, code in utf8.codes(text) do
+  for _, code in utf8.codes(text) do
     local char = utf8.char(code)
     result = result .. (hiragana_to_katakana[char] or char)
   end
@@ -184,6 +196,15 @@ local function get_candidate_menu(context)
   if composition:empty() then return nil end
   local segment = composition:back()
   return segment, segment.menu
+end
+
+-- 处理单个候选词的上屏
+local function commit_single_candidate(segment, menu, context, env)
+  local cand = menu:get_candidate_at(0)
+  env.engine:commit_text(cand.text)
+  context:clear()
+  last_selected_index = -1
+  return true
 end
 
 -- 上屏选中的候选词
@@ -215,8 +236,7 @@ local function handle_tab_conversion(context, env, input)
         return 1
       end
     end
-    -- 如果选中的候选词中没有平假名可转换，屏蔽tab键输出
-    return 1
+    return 1  -- 如果选中的候选词中没有平假名可转换，屏蔽tab键输出
   end
   
   -- 处理编码区内容
@@ -252,7 +272,48 @@ local function handle_bracket_key(key_repr, input, context, env)
     return 1
   end
   
-  return nil -- 继续处理组合逻辑
+  -- 处理组合映射
+  local combo_key = last_char .. (is_left and "[" or "]")
+  local combo_char = combo_mappings[combo_key]
+  
+  if combo_char then
+    update_input(context, remove_last_char(input) .. combo_char)
+    return 1
+  end
+  
+  return nil
+end
+
+-- 处理候选词选择
+local function handle_candidate_selection(context, env, reverse)
+  local segment, menu = get_candidate_menu(context)
+  if not (segment and menu) then return nil end
+  
+  local candidate_count = menu:candidate_count()
+  -- 如果只有一个候选词，直接上屏
+  if candidate_count == 1 then
+    return commit_single_candidate(segment, menu, context, env)
+  end
+  
+  -- 多个候选词时的选择逻辑
+  if reverse then
+    -- 向前选择
+    if segment.selected_index == -1 or segment.selected_index == 0 then
+      segment.selected_index = candidate_count - 1
+    else
+      segment.selected_index = segment.selected_index - 1
+    end
+  else
+    -- 向后选择
+    if segment.selected_index == -1 then
+      segment.selected_index = 0
+    else
+      segment.selected_index = (segment.selected_index + 1) % candidate_count
+    end
+  end
+  
+  last_selected_index = segment.selected_index
+  return true
 end
 
 local function processor(key_event, env)
@@ -264,31 +325,18 @@ local function processor(key_event, env)
   if context:has_menu() and last_selected_index == -1 then
     local composition = context.composition
     if not composition:empty() then
-      local segment = composition:back()
-      segment.selected_index = -1
+      composition:back().selected_index = -1
     end
+  end
+
+  -- 忽略修饰键和释放事件
+  if key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() then
+    return kNoop
   end
 
   -- 处理Shift+Space键（向前选择候选词）
   if key_repr == "Shift+space" then
-    local segment, menu = get_candidate_menu(context)
-    if segment and menu then
-      local candidate_count = menu:candidate_count()
-      -- 如果只有一个候选词，直接上屏
-      if candidate_count == 1 then
-        local cand = menu:get_candidate_at(0)
-        env.engine:commit_text(cand.text)
-        context:clear()
-        last_selected_index = -1
-        return 1
-      end
-      -- 多个候选词时保持原有行为
-      if segment.selected_index == -1 or segment.selected_index == 0 then
-        segment.selected_index = candidate_count - 1
-      else
-        segment.selected_index = segment.selected_index - 1
-      end
-      last_selected_index = segment.selected_index
+    if handle_candidate_selection(context, env, true) then
       return 1
     end
   end
@@ -296,7 +344,7 @@ local function processor(key_event, env)
   -- 处理回车键
   if key_repr == "Return" then
     if commit_selected_candidate(context, env) then
-          return 1
+      return 1
     end
   end
   
@@ -307,42 +355,17 @@ local function processor(key_event, env)
   
   -- 处理空格键（向后选择候选词）
   if key_repr == "space" then
-    local segment, menu = get_candidate_menu(context)
-    if segment and menu then
-      local candidate_count = menu:candidate_count()
-      -- 如果只有一个候选词，直接上屏
-      if candidate_count == 1 then
-        local cand = menu:get_candidate_at(0)
-        env.engine:commit_text(cand.text)
-        context:clear()
-        last_selected_index = -1
-        return 1
-      end
-      -- 多个候选词时保持原有行为
-      if segment.selected_index == -1 then
-        segment.selected_index = 0
-      else
-        segment.selected_index = (segment.selected_index + 1) % candidate_count
-      end
-      last_selected_index = segment.selected_index
+    if handle_candidate_selection(context, env, false) then
       return 1
     end
   end
   
-    -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
-  if not (key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() or
-          key_repr == "space" or key_repr == "Shift+BackSpace" or key_repr == "backspace" or
-          key_repr == "BackSpace" or key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R" or 
-          key_repr == "Caps_Lock") then
+  -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
+  if not (key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() or IGNORED_KEYS[key_repr]) then
     if commit_selected_candidate(context, env) then
       input = ""  -- 清空input变量
     end
     last_selected_index = -1
-  end
-  
-  -- 忽略修饰键和释放事件
-  if key_event:ctrl() or key_event:alt() or key_event:release() or key_event:caps() then
-    return kNoop
   end
   
   -- 处理按键映射（合并了原来的shift组合键处理）
@@ -358,30 +381,23 @@ local function processor(key_event, env)
   end
   
   -- 对按键名称进行小写化处理
-  key_repr = string.lower(key_repr)
+  local key_lower = string.lower(key_repr)
+  
+  -- 处理中括号的特殊情况
+  if BRACKET_KEYS[key_lower] then
+    local result = handle_bracket_key(key_lower, input, context, env)
+    if result then return result end
+  end
   
   -- 再次检查映射（针对小写形式）
-  mapped_char = key_mappings[key_repr]
+  mapped_char = key_mappings[key_lower]
   if mapped_char then
     update_input(context, input .. mapped_char)
     return 1
   end
-
-  -- 处理组合映射（[ 或 ]）
-  if (key_repr == "bracketleft" or key_repr == "bracketright") and utf8.len(input) > 0 then
-    local last_char = get_last_char(input)
-    local combo_key = last_char .. (key_repr == "bracketleft" and "[" or "]")
-    local combo_char = combo_mappings[combo_key]
-    
-    if combo_char then
-      local prefix = remove_last_char(input)
-      update_input(context, prefix .. combo_char)
-      return 1
-    end
-  end
   
   -- 处理退格键
-  if key_repr == "backspace" and utf8.len(input) > 0 then
+  if key_lower == "backspace" and utf8.len(input) > 0 then
     update_input(context, remove_last_char(input))
     return 1
   end
