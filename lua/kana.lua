@@ -142,7 +142,7 @@ local function get_last_char(input)
     else
       -- UTF-8起始字节
       return string.sub(input, i, i + bytes)
-    end
+  end
   end
   
   -- 如果没找到起始字节，返回最后一个字节
@@ -369,7 +369,7 @@ local function processor(key_event, env)
   -- 处理回车键
   if key_repr == "Return" then
     if commit_selected_candidate(context, env) then
-      return 1
+          return 1
     end
   end
   
@@ -394,7 +394,7 @@ local function processor(key_event, env)
           key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R" or 
           key_repr == "Caps_Lock") then
     if commit_selected_candidate(context, env) then
-      input = ""  -- 清空input变量
+          input = ""  -- 清空input变量
     end
     last_selected_index = -1
   end

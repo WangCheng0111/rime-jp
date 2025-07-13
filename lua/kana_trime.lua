@@ -138,7 +138,7 @@ local function get_last_char(input)
     else
       -- UTF-8起始字节
       return string.sub(input, i, i + bytes)
-    end
+  end
   end
   
   -- 如果没找到起始字节，返回最后一个字节
@@ -365,7 +365,7 @@ local function processor(key_event, env)
   -- 处理回车键
   if key_repr == "Return" then
     if commit_selected_candidate(context, env) then
-      return 1
+          return 1
     end
   end
   
@@ -384,7 +384,7 @@ local function processor(key_event, env)
     end
   end
   
-  -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
+    -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
   if not (key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() or
           key_repr == "space" or key_repr == "Shift+BackSpace" or key_repr == "BackSpace" or
           key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R" or 
@@ -411,7 +411,13 @@ local function processor(key_event, env)
   if key_event:shift() then
     return kNoop
   end
-  
+
+  -- 处理中括号的特殊情况
+  if key_repr == "bracketleft" or key_repr == "bracketright" then
+    local result = handle_bracket_key(key_repr, input, context, env)
+    if result then return result end
+  end
+
   -- 处理组合映射（[ 或 ]）
   if (key_repr == "bracketleft" or key_repr == "bracketright") and #input > 0 then
     local last_char = get_last_char(input)
