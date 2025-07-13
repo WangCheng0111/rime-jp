@@ -9,7 +9,7 @@ local function special_key_processor(key_event, env)
   end
   
   local context = env.engine.context
-  local key_repr = string.lower(key_event:repr())
+  local key_repr = key_event:repr()
   
   -- 检查是否为数字键0-9
   local is_number = key_repr:match("^[0-9]$")
