@@ -25,7 +25,6 @@ local key_mappings = {
   ["Shift+8"] = "ゅ",     -- Shift+*
   ["Shift+9"] = "ょ",     -- Shift+(
   ["Shift+0"] = "を",     -- Shift+)
-  -- 新增的Shift组合键映射
   ["Shift+grave"] = "っろ",        -- Shift+`
   ["Shift+exclam"] = "っぬ",       -- Shift+!
   ["Shift+at"] = "っふ",           -- Shift+@
@@ -411,7 +410,7 @@ local function processor(key_event, env)
   if key_event:shift() then
     return kNoop
   end
-
+  
   -- 处理中括号的特殊情况
   if key_repr == "bracketleft" or key_repr == "bracketright" then
     local result = handle_bracket_key(key_repr, input, context, env)

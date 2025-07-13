@@ -28,7 +28,6 @@ local shift_key_mappings = {
   ["Shift+parenright"] = "を",     -- Shift+)
   ["Shift+Z"] = "っ",              -- Shift+Z
   ["Shift+E"] = "ぃ",              -- Shift+E
-  -- 新增的映射
   ["Shift+asciitilde"] = "っろ",   -- Shift+~ (Shift+grave)
   ["Shift+exclam"] = "っぬ",       -- Shift+!
   ["Shift+at"] = "っふ",           -- Shift+@
