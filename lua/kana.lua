@@ -59,9 +59,6 @@ local shift_key_mappings = {
   ["Shift+B"] = "っこ",            -- Shift+B
   ["Shift+N"] = "っみ",            -- Shift+N
   ["Shift+M"] = "っも",            -- Shift+M
-  ["Shift+less"] = "っね",         -- Shift+< (Shift+comma)
-  ["Shift+greater"] = "っる",      -- Shift+> (Shift+period)
-  ["Shift+question"] = "っめ",     -- Shift+? (Shift+slash)
   ["Shift+underscore"] = "ー"       -- Shift+_ (Shift+minus)
 }
 

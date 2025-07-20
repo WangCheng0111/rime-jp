@@ -55,9 +55,6 @@ local key_mappings = {
   B = "っこ",            -- Shift+B
   N = "っみ",            -- Shift+N
   M = "っも",            -- Shift+M
-  ["Shift+comma"] = "っね",        -- Shift+,
-  ["Shift+period"] = "っる",       -- Shift+.
-  ["Shift+slash"] = "っめ",        -- Shift+/
   ["Shift+minus"] = "ー"           -- Shift+- (减号键的长音符)
 }
 
