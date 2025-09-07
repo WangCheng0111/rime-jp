@@ -16,7 +16,7 @@ punctuator:
     '{' : { commit: 「 }
     '}' : { commit: 」 }
     '?' : { commit: ・ }
-    '!' : { commit: ... }
+    '!' : { commit: … }
 
   full_shape:
     " ": { commit: ' ' }
