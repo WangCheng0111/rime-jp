@@ -1,0 +1,88 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: jp
+  name: 日文
+  icon: jp.ico
+  version: "2025.06.21"
+  author:
+    - 王城
+  description: |
+    王城自制日文输入法
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 假名, 西文 ]
+  - name: full_shape
+    states: [半角, 全角]
+    reset: 0
+  - name: kata
+    reset: 0
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - lua_processor@kana
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+  translators:
+    - table_translator
+    - punct_translator
+  filters:
+    - uniquifier
+
+menu:
+  page_size: 3
+  alternative_select_labels: [ ㊀, ㊁, ㊂, ㊃, ㊄, ㊅, ㊆, ㊇, ㊈ ]
+
+speller:
+  alphabet: ろぬふあうえおやゆよわほへたていすかんなにらせむちとしはきくまのりれけつさそひこみもねるめぁぅぇぉゃゅょぃっをーぶぼべだでずがぜぢどじばぎぐげづざぞびごぷぽぺぴぱ
+
+translator:
+  dictionary: jp
+  enable_completion: false
+  enable_sentence: false
+  enable_user_dict: false # 是否开启自动调频，true为开启
+
+
+punctuator:
+  import_preset: riwenmysymbols
+
+key_binder:
+  import_preset: default
+  bindings:
+    #composing大于等于has_menu，如果为空码时composing仍能匹配到，has_menu只能识别有候选窗的时候
+    #- { accept: Shift+Z, send: a, when: always }
+    - { accept: F7, select: en, when: always}
+    #- { accept: semicolon, send_sequence: "{Control+1}{percent}", when: always}
+recognizer:
+  import_preset: default
+  patterns:
+    uppercase: "" #中文状态大写锁定直接上屏
+
+ascii_composer:
+  switch_key:
+    Caps_Lock: noop
+    Eisu_toggle: clear
+    Control_L: commit_code
+    Control_R: noop
+    Shift_L: noop
+    Shift_R: noop
+style:
+  horizontal: true
+  preedit_type: preview
+  #layout:
+    #margin_x : -1
+    #margin_y : -1

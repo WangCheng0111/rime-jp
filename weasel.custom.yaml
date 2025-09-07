@@ -1,0 +1,24 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.17.4
+  generator: "Weasel::UIStyleSettings"
+  modified_time: "Mon Jul  7 22:39:48 2025"
+  rime_version: 1.13.1
+patch:
+  "preset_color_schemes/+":
+    win11dark: {back_color: 0x2C2C2C, border_color: 0x002C2C2C, hilited_candidate_back_color: 0x383838, hilited_label_color: 0xf9f9f9, hilited_mark_color: 0xFFC24C, label_color: 0xf9f9f9, name: "Win11暗色 / Win11Dark", shadow_color: 0x20000000, text_color: 0xf9f9f9}
+    win11light: {back_color: 0xf9f9f9, border_color: 0x009e5a00, hilited_candidate_back_color: 0xf0f0f0, hilited_label_color: 0x191919, hilited_mark_color: 0xc06700, label_color: 0x191919, name: " Win11浅色 / Win11light", shadow_color: 0x20000000, text_color: 0x191919}
+  "style/+":
+    color_scheme: win11light
+    color_scheme_dark: win11dark
+    comment_font_face: "苹方"
+    comment_font_point: 12
+    font_face: "苹方"
+    font_point: 14
+    horizontal: true
+    inline_preedit: true
+    label_font_face: "苹方"
+    label_font_point: 12
+    label_format: "%s"
+    layout: {border: 2, candidate_spacing: 22, corner_radius: 10, hilite_padding: 2, hilite_padding_x: 8, hilite_spacing: 6, margin_x: 16, margin_y: 8, min_width: 10, round_corner: 8, shadow_radius: 8}
+  "style/color_scheme": win11light
