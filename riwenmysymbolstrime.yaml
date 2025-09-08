@@ -1,0 +1,20 @@
+# Rime's punctuation and symbols
+# encoding: utf-8
+#
+# Trime同文输入法按键的long_click是由该文件定义的
+# 使用Trime同文输入法时打单个符号就长按就行，如果打不止一个符号，则点开符号面板打完再返回就行。不要使用长按shift的方式打符号
+# Trime同文输入法按键的长按按键的延迟时间改为100毫秒
+
+config_version: '1.6'
+
+
+punctuator:
+  half_shape:
+    '<' : { commit: ！ }
+    '>' : { commit: ？ }
+    '{' : { commit: 「 }
+    '}' : { commit: 」 }
+    '?' : { commit: ・ }
+    ':' : { commit: ： }
+
+  full_shape:
