@@ -18,6 +18,9 @@ switches:
   - name: full_shape
     reset: 0
     states: [ 半角, 全角 ]
+  - name: extended_charset
+    states: [ 常用, 增廣 ]
+    reset: 0
 
 engine:
   processors:
