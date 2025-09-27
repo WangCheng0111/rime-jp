@@ -44,7 +44,7 @@ engine:
     - uniquifier
 
 menu:
-  page_size: 3
+  page_size: 9
   alternative_select_labels: [ ㊀, ㊁, ㊂, ㊃, ㊄, ㊅, ㊆, ㊇, ㊈ ]
 
 speller:
@@ -81,7 +81,7 @@ ascii_composer:
     Shift_L: noop
     Shift_R: noop
 style:
-  horizontal: true
+  horizontal: false
   preedit_type: preview
   #layout:
     #margin_x : -1
