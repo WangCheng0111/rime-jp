@@ -1,7 +1,6 @@
 -- kana.lua
 -- 按键到假名的映射处理器
 -- 支持单字符映射和两字符组合映射
--- 该输入方案在电脑上使用时，1，2，3，4，5候选使用空格来选择；6，7，8，9候选使用Shift+空格来选择
 -- 按键映射表
 local key_mappings = {
   -- 字母映射
@@ -308,57 +307,11 @@ local function handle_bracket_key(key_repr, input, context, env)
   return nil -- 继续处理组合逻辑
 end
 
--- 处理候选词选择
-local function handle_candidate_selection(context, env, segment, menu, index_change)
-  local candidate_count = menu:candidate_count()
-
-  -- 如果只有一个候选词，直接上屏
-  if candidate_count == 1 then
-    return commit_single_candidate(segment, menu, context, env)
-  end
-
-  -- 多个候选词时根据index_change调整选择
-  if index_change == "next" then
-    if segment.selected_index == -1 then
-      segment.selected_index = 0
-    else
-      segment.selected_index = (segment.selected_index + 1) % candidate_count
-    end
-  elseif index_change == "prev" then
-    if segment.selected_index == -1 or segment.selected_index == 0 then
-      segment.selected_index = candidate_count - 1
-    else
-      segment.selected_index = segment.selected_index - 1
-    end
-  end
-
-  last_selected_index = segment.selected_index
-  return true
-end
-
 local function processor(key_event, env)
   local context = env.engine.context
   local key_repr = key_event:repr()
   local input = context.input or ""
 
-  -- 初始化候选窗状态
-  if context:has_menu() and last_selected_index == -1 then
-    local composition = context.composition
-    if not composition:empty() then
-      local segment = composition:back()
-      segment.selected_index = -1
-    end
-  end
-
-  -- 处理Shift+Space键（向前选择候选词）
-  if key_repr == "Shift+space" then
-    local segment, menu = get_candidate_menu(context)
-    if segment and menu then
-      if handle_candidate_selection(context, env, segment, menu, "prev") then
-        return 1
-      end
-    end
-  end
 
   -- 处理回车键
   if key_repr == "Return" then
@@ -372,26 +325,17 @@ local function processor(key_event, env)
     return handle_tab_conversion(context, env, input)
   end
 
-  -- 处理空格键（向后选择候选词）
+  -- 处理空格键（直接上屏第一候选）
   if key_repr == "space" then
     local segment, menu = get_candidate_menu(context)
     if segment and menu then
-      if handle_candidate_selection(context, env, segment, menu, "next") then
+      if commit_single_candidate(segment, menu, context, env) then
         return 1
       end
     end
+    -- 如果没有候选窗，让空格键正常处理
   end
 
-  -- 处理其他按键输入时，检查是否需要上屏之前选中的候选词
-  if not (key_event:release() or key_event:ctrl() or key_event:alt() or key_event:caps() or
-          key_repr == "space" or key_repr == "Shift+BackSpace" or key_repr == "BackSpace" or
-          key_repr == "Shift+Shift_L" or key_repr == "Shift+Shift_R" or
-          key_repr == "Caps_Lock") then
-    if commit_selected_candidate(context, env) then
-          input = ""  -- 清空input变量
-    end
-    last_selected_index = -1
-  end
 
   -- 忽略修饰键和释放事件
   if key_event:ctrl() or key_event:alt() or key_event:release() or key_event:caps() then
