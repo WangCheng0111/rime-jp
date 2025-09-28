@@ -17,6 +17,9 @@ local key_mappings = {
   minus = "ほ", equal = "へ", backslash = "む", comma = "ね", period = "る", slash = "め",
   grave = "ろ", apostrophe = "け", semicolon = "れ",
   -- Shift+数字映射（原shift组合键）
+  ["Shift+grave"] = "っろ",        -- Shift+`
+  ["Shift+1"] = "っぬ",       -- Shift+!
+  ["Shift+2"] = "っふ",           -- Shift+@
   ["Shift+3"] = "ぁ",     -- Shift+#
   ["Shift+4"] = "ぅ",     -- Shift+$
   ["Shift+5"] = "ぇ",     -- Shift+%
@@ -25,7 +28,6 @@ local key_mappings = {
   ["Shift+8"] = "ゅ",     -- Shift+*
   ["Shift+9"] = "ょ",     -- Shift+(
   ["Shift+0"] = "を",     -- Shift+)
-  ["Shift+at"] = "っふ",           -- Shift+@
   ["Shift+equal"] = "っへ",        -- Shift+=
   Q = "った",            -- Shift+Q
   W = "って",            -- Shift+W
