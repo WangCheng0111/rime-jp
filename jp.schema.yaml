@@ -18,14 +18,12 @@ switches:
   - name: full_shape
     states: [半角, 全角]
     reset: 0
-  - name: kata
-    reset: 0
 
 engine:
   processors:
     - ascii_composer
     - recognizer
-    - lua_processor@kana
+    - lua_processor@*kana
     - key_binder
     - speller
     - punctuator
@@ -44,7 +42,7 @@ engine:
     - uniquifier
 
 menu:
-  page_size: 9
+  page_size: 2
   alternative_select_labels: [ ㊀, ㊁, ㊂, ㊃, ㊄, ㊅, ㊆, ㊇, ㊈ ]
 
 speller:
@@ -81,7 +79,7 @@ ascii_composer:
     Shift_L: noop
     Shift_R: noop
 style:
-  horizontal: false
+  horizontal: true
   preedit_type: preview
   #layout:
     #margin_x : -1
