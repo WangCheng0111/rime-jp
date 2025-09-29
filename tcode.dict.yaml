@@ -1,0 +1,11 @@
+name: tcode
+version: "GB18030"
+sort: original
+use_preset_vocabulary: false
+columns:
+  - code
+  - text
+...
+a	没
+a	没有
+aa	洋
