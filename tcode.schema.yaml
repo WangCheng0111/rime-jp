@@ -5,6 +5,7 @@ schema:
   description: |
     T-Code
   name: "T-Code"
+  icon: jp.ico
   version: "GB18030"
 
 
@@ -68,7 +69,7 @@ translator:
   enable_completion: false
 
 punctuator:
-  import_preset: mysymbols
+  import_preset: tcodesymbols
 
 key_binder:
   import_preset: default

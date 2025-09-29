@@ -1,0 +1,10 @@
+# Rime's punctuation and symbols
+# encoding: utf-8
+# Trime同文输入法按键的长按按键的延迟时间改为300毫秒
+
+config_version: '1.6'
+
+punctuator:
+  half_shape:
+
+  full_shape:
