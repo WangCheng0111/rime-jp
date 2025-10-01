@@ -51,5 +51,3 @@ local function tcode_processor(key_event, env)
 end
 
 return tcode_processor
-
-

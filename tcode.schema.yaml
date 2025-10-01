@@ -51,9 +51,9 @@ engine:
 speller:
   auto_clear: auto
   auto_select: true
-  max_code_length: 2
+  max_code_length: 4
   alphabet: 1234567890abcdefghijklmnopqrstuvwxyz;,./
-  # auto_select_pattern: ^;\w+|^\w{4}$
+  auto_select_pattern: ^(?:(?!jf$|fj$)[0-9a-z;,./]{2}|(?:fj|jf)[0-9a-z;,./]{2})$
 
 
 translator:
@@ -63,7 +63,7 @@ translator:
   enable_encoder: false
   enable_sentence: false
   encode_commit_history: true
-  max_phrase_length: 2
+  # max_phrase_length: 2
   enable_user_dict: false
   # 禁用编码补全（关闭实时候选）
   enable_completion: false
