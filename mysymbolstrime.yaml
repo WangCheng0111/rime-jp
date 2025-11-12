@@ -1,6 +1,6 @@
 # Rime's punctuation and symbols
 # encoding: utf-8
-#
+# Trime打标点符号时，无论中（日）或者英文，都采用长按来输入
 # Usage: patch your Rime schema to enable /X symbols
 
 config_version: '1.6'
@@ -68,9 +68,9 @@ punctuator:
     '-' : '——'
     '_' : '-'
     '+' : '+'
-    '=' : [ '=', 々, 〃 ]
-    '[' : [ 「, 【, 〔, ［, 〚, 〘 ]
-    ']' : [ 」, 】, 〕, ］, 〛, 〙 ]
+    '=' : '='
+    '[' : '['
+    ']' : ']'
     '{' : '｛'
     '}' : '｝'
     "z" : OK

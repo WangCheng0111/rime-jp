@@ -7,10 +7,10 @@ local function special_key_processor(key_event, env)
   if key_event:ctrl() or key_event:alt() or key_event:release() or key_event:caps() then
     return kNoop
   end
-  
+
   local context = env.engine.context
   local key_repr = key_event:repr()
-  
+
   -- 处理Shift组合键（如Shift+D等）
   if key_event:shift() and context:has_menu() then
     -- 获取第一个候选词的文本并直接提交（适配Trime）
@@ -28,7 +28,7 @@ local function special_key_processor(key_event, env)
       end
     end
   end
-  
+
   -- 检查是否为数字键0-9
   local is_number = key_repr:match("^[0-9]$")
   if is_number then
@@ -52,31 +52,17 @@ local function special_key_processor(key_event, env)
     end
     return kNoop
   end
-  
-  -- 检查是否为小写z键（保持原有逻辑不变）
-  if key_repr == "z" then
-    -- 如果有候选菜单，则顶屏
-    if context:has_menu() then
-      -- 选择第一个候选并上屏
-      context:select(0)  -- 索引从0开始，0表示第一个候选
-      context:commit()
-      return kNoop  -- 继续处理，允许输出z键本身
-    else
-      -- 如果没有候选菜单，保持原样
-      return kNoop  -- 继续处理
-    end
-  end
-  
+
   -- 仅处理分号和斜杠键
   if key_repr ~= "semicolon" and key_repr ~= "slash" then
     return kNoop
   end
-  
+
   -- 如果没有候选菜单，继续正常处理
   if not context:has_menu() then
     return kNoop
   end
-  
+
   -- 获取候选数量
   local candidate_count = 0
   local composition = context.composition
@@ -86,7 +72,7 @@ local function special_key_processor(key_event, env)
       candidate_count = segment.menu:candidate_count()
     end
   end
-  
+
   -- 处理分号键和斜杠键的特殊逻辑
   if key_repr == "semicolon" or key_repr == "slash" then
     if candidate_count == 1 then
@@ -122,8 +108,8 @@ local function special_key_processor(key_event, env)
       end
     end
   end
-  
+
   return kNoop
 end
 
-return special_key_processor 
+return special_key_processor
