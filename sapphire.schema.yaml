@@ -69,7 +69,7 @@ translator:
 
 punctuator:
   import_preset: mysymbols
-  #import_preset: mysymbolstrime
+  #import_preset: trimemysymbols
 
 key_binder:
   import_preset: default

@@ -29,32 +29,8 @@ local function special_key_processor(key_event, env)
     end
   end
 
-  -- 检查是否为数字键0-9
-  local is_number = key_repr:match("^[0-9]$")
-  if is_number then
-    -- 如果有候选菜单，则顶屏
-    if context:has_menu() then
-      -- 获取第一个候选词的文本并直接提交（适配Trime）
-      local composition = context.composition
-      if composition and not composition:empty() then
-        local segment = composition:back()
-        if segment and segment.menu then
-          local candidate = segment.menu:get_candidate_at(0)
-          if candidate then
-            env.engine:commit_text(candidate.text)
-            context:clear()
-            -- 然后输出数字键本身
-            env.engine:commit_text(key_repr)
-            return 1  -- 屏蔽原始数字键输出，因为我们已经手动输出了
-          end
-        end
-      end
-    end
-    return kNoop
-  end
-
   -- 仅处理分号和斜杠键
-  if key_repr ~= "semicolon" and key_repr ~= "slash" then
+  if key_repr ~= "period" and key_repr ~= "comma" then
     return kNoop
   end
 
@@ -74,12 +50,12 @@ local function special_key_processor(key_event, env)
   end
 
   -- 处理分号键和斜杠键的特殊逻辑
-  if key_repr == "semicolon" or key_repr == "slash" then
+  if key_repr == "period" or key_repr == "comma" then
     if candidate_count == 1 then
       -- 只有一个候选时，使用系统默认行为
       return kNoop
     elseif candidate_count == 2 then
-      if key_repr == "semicolon" then
+      if key_repr == "period" then
         -- 两个候选时，分号选择第二个候选
         context:select(1)  -- 索引从0开始，1表示第二个候选
         context:commit()
@@ -91,7 +67,7 @@ local function special_key_processor(key_event, env)
         return kNoop
       end
     else  -- candidate_count >= 3
-      if key_repr == "semicolon" then
+      if key_repr == "period" then
         -- 三个及以上候选时，分号选择第二个候选
         context:select(1)  -- 索引从0开始，1表示第二个候选
         context:commit()
