@@ -78,6 +78,7 @@ key_binder:
     - { accept: F7, select: KappaJP, when: always }
     - { accept: comma, when: has_menu, send: comma }  # 逗号不触发上一页
     - { accept: period, when: has_menu, send: period } # 句号不触发下一页
+    - { when: always, accept: Shift+space, toggle: full_shape }
 
 recognizer:
   import_preset: default

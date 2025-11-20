@@ -1,5 +1,5 @@
 -- special_key_processor.lua
--- 用于处理分号、斜杠键、小写z和数字0-9的特殊行为
+-- 用于处理分号、问号键和数字0-9的特殊行为
 
 -- 主处理函数
 local function special_key_processor(key_event, env)
@@ -53,8 +53,8 @@ local function special_key_processor(key_event, env)
     return kNoop
   end
 
-  -- 仅处理分号和斜杠键
-  if key_repr ~= "semicolon" and key_repr ~= "slash" then
+  -- 仅处理分号和问号键
+  if key_repr ~= "semicolon" and key_repr ~= "question" then
     return kNoop
   end
 
@@ -73,8 +73,8 @@ local function special_key_processor(key_event, env)
     end
   end
 
-  -- 处理分号键和斜杠键的特殊逻辑
-  if key_repr == "semicolon" or key_repr == "slash" then
+  -- 处理分号键和问号键的特殊逻辑
+  if key_repr == "semicolon" or key_repr == "question" then
     if candidate_count == 1 then
       -- 只有一个候选时，使用系统默认行为
       return kNoop
@@ -86,8 +86,8 @@ local function special_key_processor(key_event, env)
         if not context:has_menu() then
           return 1  -- 屏蔽分号本身的输出
         end
-      else  -- slash
-        -- 两个候选时，斜杠键使用系统默认行为
+      else  -- question
+        -- 两个候选时，问号键使用系统默认行为
         return kNoop
       end
     else  -- candidate_count >= 3
@@ -98,12 +98,12 @@ local function special_key_processor(key_event, env)
         if not context:has_menu() then
           return 1  -- 屏蔽分号本身的输出
         end
-      else  -- slash
-        -- 三个及以上候选时，斜杠键选择第三个候选
+      else  -- question
+        -- 三个及以上候选时，问号键选择第三个候选
         context:select(2)  -- 索引从0开始，2表示第三个候选
         context:commit()
         if not context:has_menu() then
-          return 1  -- 屏蔽斜杠键本身的输出
+          return 1  -- 屏蔽问号键本身的输出
         end
       end
     end

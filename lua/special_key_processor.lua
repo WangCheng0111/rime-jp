@@ -1,5 +1,5 @@
 -- special_key_processor.lua
--- 用于处理分号、单引号、小写z和数字0-9的特殊行为
+-- 用于处理分号、单引号和数字0-9的特殊行为
 
 -- 主处理函数
 local function special_key_processor(key_event, env)
