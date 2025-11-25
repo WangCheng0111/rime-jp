@@ -570,7 +570,7 @@ preset_keyboards:
       - {click: space, width: 30, long_click: liquid_keyboard_clipboard}
       #- {click: Keyboard_number, long_click: Keyboard_symbols}
       - {click: Mode_switch, long_click: Menu}
-      - {click: BackSpace, width: 25}
+      - {click: BackSpace, width: 25, swipe_up: Escape}
       - {click: Return, composing: Return1, long_click: CommitComment, width: 25}
   mini:
     name: 精简键盘
