@@ -46,13 +46,11 @@ engine:
   filters:
     - uniquifier
 
-
 speller:
   auto_clear: max_length
   auto_select: true
   max_code_length: 4
   auto_select_pattern: ^z\w+|^\w{4}$
-
 
 translator:
   dictionary: sapphire
