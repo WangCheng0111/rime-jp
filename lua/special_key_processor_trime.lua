@@ -1,5 +1,5 @@
 -- special_key_processor.lua
--- 用于处理分号、问号键和数字0-9的特殊行为
+-- 用于处理分号、问号键、小写z和数字0-9的特殊行为
 
 -- 主处理函数
 local function special_key_processor(key_event, env)
@@ -51,6 +51,20 @@ local function special_key_processor(key_event, env)
       end
     end
     return kNoop
+  end
+
+  -- 检查是否为小写z键（保持原有逻辑不变）
+  if key_repr == "z" then
+    -- 如果有候选菜单，则顶屏
+    if context:has_menu() then
+      -- 选择第一个候选并上屏
+      context:select(0)  -- 索引从0开始，0表示第一个候选
+      context:commit()
+      return kNoop  -- 继续处理，允许输出z键本身
+    else
+      -- 如果没有候选菜单，保持原样
+      return kNoop  -- 继续处理
+    end
   end
 
   -- 仅处理分号和问号键
