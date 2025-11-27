@@ -55,6 +55,11 @@ local function special_key_processor(key_event, env)
 
   -- 检查是否为小写z键（保持原有逻辑不变）
   if key_repr == "z" then
+    -- 排除zz顶屏：如果编码区有且只有一个字符"z"，则不顶屏
+    local input = context.input or ""
+    if input == "z" then
+      return kNoop  -- 保持原样，不顶屏
+    end
     -- 如果有候选菜单，则顶屏
     if context:has_menu() then
       -- 选择第一个候选并上屏
