@@ -86,6 +86,7 @@ recognizer:
     uppercase: "" #中文状态大写锁定直接上屏
 
 ascii_composer:
+  good_old_caps_lock: true
   switch_key:
     Caps_Lock: noop
     Control_L: commit_code
