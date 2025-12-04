@@ -52,8 +52,8 @@ speller:
   auto_clear: auto
   auto_select: true
   max_code_length: 4
-  alphabet: 1234567890abcdefghijklmnopqrstuvwxyz;,./
-  auto_select_pattern: ^(?:(?!jf$|fj$)[0-9a-z;,./]{2}|(?:fj|jf)[0-9a-z;,./]{2})$
+  alphabet: abcdefghijklmnopqrstuvwxyz;,./
+  auto_select_pattern: ^((?:fj|jf)[a-z]{2}|(?!fj|jf)[a-z]{2})$
 
 
 translator:
