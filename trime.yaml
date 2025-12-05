@@ -566,7 +566,7 @@ preset_keyboards:
       - {click: ',', long_click: '<'}
       - {click: '.', long_click: '>'}
       - {click: '?', long_click: '!'}
-      - {click: Shift_L}
+      - {click: Shift_L, composing: Escape}
       - {click: space, width: 30, long_click: liquid_keyboard_clipboard}
       #- {click: Keyboard_number, long_click: Keyboard_symbols}
       - {click: Mode_switch, long_click: Menu}

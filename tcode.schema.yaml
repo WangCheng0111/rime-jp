@@ -53,7 +53,7 @@ speller:
   auto_select: true
   max_code_length: 4
   alphabet: abcdefghijklmnopqrstuvwxyz;,./
-  auto_select_pattern: ^((?:fj|jf)[a-z]{2}|(?!fj|jf)[a-z]{2})$
+  auto_select_pattern: ^(?:(?!fj|jf)[a-z;,./]{2})|(?:fj(?:jq|ut|,t)|jf(?:jq|ut|,t))$
 
 
 translator:
