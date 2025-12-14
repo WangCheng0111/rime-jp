@@ -25,11 +25,11 @@ switches:
 engine:
   processors:
     - ascii_composer
+    - punctuator
     - recognizer
     - lua_processor@special_key_processor
     - key_binder
     - speller
-    - punctuator
     - selector
     - navigator
     - express_editor

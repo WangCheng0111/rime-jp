@@ -52,10 +52,10 @@ speller:
   auto_clear: auto
   auto_select: true
   max_code_length: 4
-  alphabet: abcdefghijklmnopqrstuvwxyz;,./
-  #alphabet: abcdefghijklmnopqrstuvwxyz;,.?
-  auto_select_pattern: ^(?:(?!fj|jf)[a-z;,./]{2}|(?:jf|fj)[a-z;,./]{2})$
-  #auto_select_pattern: ^(?:(?!fj|jf)[a-z;,?]{2}|(?:jf|fj)[a-z;,?]{2})$
+  alphabet: abcdefghijklmnopqrstuvwxyz;,./_
+  #alphabet: abcdefghijklmnopqrstuvwxyz;,.?_
+  auto_select_pattern: ^(?:(?!(?:[;,./]_|_[a-z;,./_]))[a-z;,./_]{2}|(?:[;,./]_)[a-z;,./]{2})$
+  #auto_select_pattern: ^(?:(?!(?:[;,.?]_|_[a-z;,.?_]))[a-z;,.?_]{2}|(?:[;,.?]_)[a-z;,.?]{2})$
 
 
 translator:
@@ -81,6 +81,7 @@ key_binder:
     - { accept: comma, when: has_menu, send: comma }  # 逗号不触发上一页
     - { accept: period, when: has_menu, send: period } # 句号不触发下一页
     - { when: always, accept: Shift+space, toggle: full_shape }
+    #- { accept: space, when: has_menu, send: underscore }  # tcodelua和这行同时开启一个就行，效果完全一样
 
 recognizer:
   import_preset: default

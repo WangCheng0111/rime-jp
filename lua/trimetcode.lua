@@ -1,5 +1,5 @@
 -- tcode.lua
--- 处理空格键的特殊行为：当编码区只有一个字符（a-z和;,./）时，将空格映射为下划线并添加到编码区
+-- 处理空格键的特殊行为：当编码区只有一个字符（a-z和;,.?）时，将空格映射为下划线并添加到编码区
 
 -- 主处理函数
 local function tcode(key_event, env)
@@ -35,11 +35,11 @@ local function tcode(key_event, env)
       return kNoop
     end
 
-    -- 编码区只有一个字符时，检查是否为 a-z 和 ;,./ 这30个字符之一
+    -- 编码区只有一个字符时，检查是否为 a-z 和 ;,.? 这30个字符之一
     if #input == 1 then
       local char = input
       -- 检查是否为 a-z 或 ;,./ 这30个字符
-      local is_valid_char = char:match("^[a-z;,./]$")
+      local is_valid_char = char:match("^[a-z;,.?]$")
       if is_valid_char then
         -- 模拟按下下划线键，让RIME正常处理（类似key_binder的send: underscore）
         -- 这样会触发完整的处理流程，包括speller检查auto_select_pattern
