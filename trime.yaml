@@ -555,7 +555,7 @@ preset_keyboards:
       - {click: 'j', long_click: Down}
       - {click: 'k', long_click: Up}
       - {click: 'l', long_click: Right}
-      - {click: ';', long_click: ':'}
+      - {click: ':', long_click: ';'}
       - {click: 'z', long_click: undo}
       - {click: 'x', long_click: cut}
       - {click: 'c', long_click: copy}
