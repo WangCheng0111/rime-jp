@@ -41,9 +41,9 @@ engine:
     - fallback_segmentor
   translators:
     - punct_translator
-    - reverse_lookup_translator
     - table_translator
   filters:
+    - simplifier
     - uniquifier
 
 speller:
@@ -92,6 +92,9 @@ ascii_composer:
     Shift_L: noop
     Shift_R: commit_text
 
+simplifier:
+  opencc_config: s2t.json
+  option_name: zh_trad
 
 menu:
   page_size: 3
