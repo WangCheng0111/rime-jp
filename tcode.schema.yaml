@@ -13,15 +13,6 @@ switches:
   - name: ascii_mode
     reset: 0
     states: [ 中文, 英文 ]
-  - name: zh_trad
-    reset: 0
-    states: [ 简体, 繁体 ]
-  - name: full_shape
-    reset: 0
-    states: [ 半角, 全角 ]
-  - name: extended_charset
-    states: [ 常用, 增廣 ]
-    reset: 0
 
 engine:
   processors:
@@ -42,7 +33,6 @@ engine:
     - fallback_segmentor
   translators:
     - punct_translator
-    - reverse_lookup_translator
     - table_translator
   filters:
     - uniquifier
