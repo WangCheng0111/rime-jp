@@ -26,6 +26,20 @@ local function tcode(key_event, env)
     end
   end
 
+  -- 处理 Tab 键
+  if key_repr == "Tab" then
+    if context:has_menu() then
+      -- 有候选菜单时：选中第一个候选并上屏
+      context:select(0)
+      context:commit()
+      -- 上屏后返回 kNoop，让 Tab 键本身继续被后续处理器处理（即可输出制表符）
+      return kNoop
+    else
+      -- 没有候选菜单时：完全不干涉，让系统正常处理 Tab
+      return kNoop
+    end
+  end
+
   -- 处理空格键
   if key_repr == "space" then
     local input = context.input or ""
