@@ -43,9 +43,9 @@ speller:
   auto_select: true
   max_code_length: 4
   alphabet: abcdefghijklmnopqrstuvwxyz;,./_
-  #alphabet: abcdefghijklmnopqrstuvwxyz:,.?_
+  #alphabet: abcdefghijklmnopqrstuvwxyz!,.?_
   auto_select_pattern: ^(?:(?!(?:[;,./]_|_[a-z;,./_]))[a-z;,./_]{2}|(?:[;,./]_)[a-z;,./]{2})$
-  #auto_select_pattern: ^(?:(?!(?:[:,.?]_|_[a-z:,.?_]))[a-z:,.?_]{2}|(?:[:,.?]_)[a-z:,.?]{2})$
+  #auto_select_pattern: ^(?:(?!(?:[!,.?]_|_[a-z!,.?_]))[a-z!,.?_]{2}|(?:[!,.?]_)[a-z!,.?]{2})$
 
 
 translator:

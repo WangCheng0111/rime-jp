@@ -555,7 +555,7 @@ preset_keyboards:
       - {click: 'j', long_click: Down}
       - {click: 'k', long_click: Up}
       - {click: 'l', long_click: Right}
-      - {click: ':', long_click: ';'}
+      - {click: '!', long_click: ''''}
       - {click: 'z', long_click: undo}
       - {click: 'x', long_click: cut}
       - {click: 'c', long_click: copy}
@@ -563,9 +563,9 @@ preset_keyboards:
       - {click: 'b', long_click: '~'}
       - {click: 'n', long_click: Insert}
       - {click: 'm', long_click: Delete}
-      - {click: ',', long_click: '<'}
-      - {click: '.', long_click: '>'}
-      - {click: '?', long_click: '!'}
+      - {click: ',', long_click: '('}
+      - {click: '.', long_click: ')'}
+      - {click: '?', long_click: '/'}
       - {click: Shift_L, composing: Escape}
       - {click: space, width: 30, long_click: liquid_keyboard_clipboard}
       #- {click: Keyboard_number, long_click: Keyboard_symbols}
