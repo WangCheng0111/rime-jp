@@ -86,11 +86,11 @@ ascii_composer:
   good_old_caps_lock: true
   switch_key:
     Caps_Lock: noop
-    Control_L: commit_code
+    Control_L: commit_text
     Control_R: noop
     Eisu_toggle: clear
     Shift_L: noop
-    Shift_R: commit_text
+    Shift_R: commit_code
 
 simplifier:
   opencc_config: s2t.json
