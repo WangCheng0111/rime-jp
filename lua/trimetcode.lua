@@ -39,7 +39,7 @@ local function tcode(key_event, env)
     if #input == 1 then
       local char = input
       -- 检查是否为 a-z 或 ;,./ 这30个字符
-      local is_valid_char = char:match("^[a-z:,.?]$")
+      local is_valid_char = char:match("^[a-z;,.?]$")
       if is_valid_char then
         -- 模拟按下下划线键，让RIME正常处理（类似key_binder的send: underscore）
         -- 这样会触发完整的处理流程，包括speller检查auto_select_pattern

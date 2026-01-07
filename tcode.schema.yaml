@@ -13,6 +13,9 @@ switches:
   - name: ascii_mode
     reset: 0
     states: [ 中文, 英文 ]
+  - name: full_shape
+    reset: 0
+    states: [ 半角, 全角 ]
 
 engine:
   processors:
@@ -43,9 +46,9 @@ speller:
   auto_select: true
   max_code_length: 4
   alphabet: abcdefghijklmnopqrstuvwxyz;,./_
-  #alphabet: abcdefghijklmnopqrstuvwxyz!,.?_
+  #alphabet: abcdefghijklmnopqrstuvwxyz;,.?_
   auto_select_pattern: ^(?:(?!(?:[;,./]_|_[a-z;,./_]))[a-z;,./_]{2}|(?:[;,./]_)[a-z;,./]{2})$
-  #auto_select_pattern: ^(?:(?!(?:[!,.?]_|_[a-z!,.?_]))[a-z!,.?_]{2}|(?:[!,.?]_)[a-z!,.?]{2})$
+  #auto_select_pattern: ^(?:(?!(?:[;,.?]_|_[a-z;,.?_]))[a-z;,.?_]{2}|(?:[;,.?]_)[a-z;,.?]{2})$
 
 
 translator:
@@ -70,7 +73,7 @@ key_binder:
     - { accept: F2, select: sapphire, when: always }
     - { accept: comma, when: has_menu, send: comma }  # 逗号不触发上一页
     - { accept: period, when: has_menu, send: period } # 句号不触发下一页
-    - { when: always, accept: Shift+space, toggle: full_shape }
+    - { accept: apostrophe, toggle: full_shape, when: always }
     #- { accept: space, when: has_menu, send: underscore }  # tcodelua和这行同时开启一个就行，效果完全一样
 
 recognizer:

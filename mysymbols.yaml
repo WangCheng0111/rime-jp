@@ -7,7 +7,6 @@ config_version: '1.6'
 
 punctuator:
   full_shape:
-    ' ' : { commit: '　' }
     ',' : { commit: ， }
     '.' : { commit: 。 }
     '<' : [ 《, 〈, «, ‹, ⟨ ]
