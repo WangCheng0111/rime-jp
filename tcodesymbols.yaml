@@ -7,5 +7,11 @@ config_version: '1.6'
 punctuator:
   half_shape:
     '\' : { commit: ￥ }
+    '[' : { commit: ゛ }
+    ']' : { commit: ゜ }
+    '-' : '-'
+    '_' : '_'
+    '+' : '='
+    '=' : '+'
 
   full_shape:
