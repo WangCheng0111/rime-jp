@@ -65,6 +65,7 @@ translator:
 
 punctuator:
   import_preset: tcodesymbols
+  #import_preset: trimetcodesymbols
 
 key_binder:
   import_preset: default
@@ -73,7 +74,7 @@ key_binder:
     - { accept: F2, select: sapphire, when: always }
     - { accept: comma, when: has_menu, send: comma }  # 逗号不触发上一页
     - { accept: period, when: has_menu, send: period } # 句号不触发下一页
-    - { accept: apostrophe, toggle: full_shape, when: always }
+    - { accept: Shift+space, toggle: full_shape, when: always }
     #- { accept: exclam, toggle: full_shape, when: always }
     #- { accept: space, when: has_menu, send: underscore }  # tcodelua和这行同时开启一个就行，效果完全一样
 
