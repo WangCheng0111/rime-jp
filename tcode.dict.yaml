@@ -522,7 +522,7 @@ columns:
 ,_ma	〆
 ,_mb	‐
 ,_mc	ゞ
-,_md	〃
+._md	〃
 ,_me	‥
 ,_mf	/
 ,_mg	＼
@@ -537,7 +537,7 @@ columns:
 ,_mp	婿
 ,_mq	；
 ,_mr	｜
-,_ms	仝
+._ms	仝
 ,_mt	∥
 ,_mu	眠
 ,_mv	ゝ
@@ -1493,7 +1493,7 @@ columns:
 ._m/	埜
 ._m;	祢
 ._ma	亘
-._md	鷲
+/_md	鷲
 ._me	藁
 ._mf	脇
 ._mg	歪
@@ -1509,7 +1509,7 @@ columns:
 ._mp	虹
 ._mq	椀
 ._mr	詫
-._ms	亙
+/_ms	亙
 ._mt	鰐
 ._mu	迩
 ._mw	蕨
@@ -2352,10 +2352,10 @@ columns:
 ;_m	;_m
 ;_ma	繊
 ;_mc	謡
-;_md	ヘ
+,_md	ヘ
 ;_mf	干
 ;_mg	血
-;_ms	父
+,_ms	父
 ;_n	;_n
 ;_na	依
 ;_nd	譲
@@ -2951,7 +2951,7 @@ ma	人
 mb	売
 mc	合
 md	ま
-md	ません
+;_md	ません
 me	工
 mf	イ
 mg	時
@@ -2967,7 +2967,7 @@ mp	即
 mq	家
 mr	名
 ms	ク
-ms	ました
+;_ms	ました
 mt	建
 mu	ォ
 mv	化
