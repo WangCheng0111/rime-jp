@@ -6,14 +6,13 @@ columns:
   - code
   - text
 ...
+#出简不出全且删掉所有生僻字
 a	没
 a	没有
 aa	洋
 aaa	海洋法
 aaaa	婆婆
 aaaa	波涛汹涌
-aaaa	戔
-aaaa	淺
 aaab	流浪汉
 aaac	湛江
 aaad	游泳池
@@ -24,7 +23,6 @@ aaaf	汗流满面
 aaah	波澜
 aaai	波浪
 aaaj	海洋学
-aaaj	剗
 aaak	汗流浃体
 aaal	潺潺流水
 aaal	活学活用
