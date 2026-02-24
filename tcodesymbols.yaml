@@ -8,7 +8,7 @@ punctuator:
   half_shape:
     '\' : { commit: ￥ }
     '[' : { commit: ゛ }
-    ']' : { commit: ゜ }
+    ']' : { commit: ° }
     '-' : '-'
     '_' : '_'
     '+' : '='
@@ -19,7 +19,7 @@ punctuator:
   full_shape:
     '\' : { commit: ￥ }
     '[' : { commit: ゛ }
-    ']' : { commit: ゜ }
+    ']' : { commit: ° }
     '-' : '-'
     '_' : '_'
     '+' : '='
