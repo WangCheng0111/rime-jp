@@ -23,7 +23,7 @@ style:
   hanb_font: hanb.ttf #擴充字型
   horizontal: true #水平模式
   horizontal_gap: 1 #鍵水平間距
-  keyboard_padding: 10 #竖屏模式下，屏幕左右两侧与键盘的距离（曲面屏减少误触）
+  keyboard_padding: 1 #竖屏模式下，屏幕左右两侧与键盘的距离（曲面屏减少误触）
   keyboard_padding_left: 0 #竖屏屏模式下，左手键盘布局，屏幕左侧与键盘的距离
   keyboard_padding_right: 40 #竖屏屏模式下，左手键盘布局，屏幕右侧与键盘的距离
   keyboard_padding_bottom: 80 #竖屏模式下，屏幕下边缘与键盘的距离（避免误触发全面屏手势）
@@ -38,7 +38,7 @@ style:
   label_font: label.ttf #編標籤字型
   latin_font: latin.ttf #西文字型
   locale: zh_CN #預設語言 zh_TW,zh_CN,zh_HK,""
-  keyboard_height: 270 #锁定键盘高度，避免切换时键盘高度变化而造成闪烁
+  keyboard_height: 295 #锁定键盘高度，避免切换时键盘高度变化而造成闪烁
   keyboard_height_land: 200 #锁定横屏下键盘高度，避免切换时键盘高度变化而造成闪烁
   preview_font: latin.ttf #按鍵提示字型
   preview_height: 60 #按鍵提示高度
