@@ -402,7 +402,7 @@ columns:
 ,_ib	至
 ,_ic	詩
 ,_id	蚕
-,_ie	皇
+,_ie	希
 ,_if	菜
 ,_ig	祭
 ,_ih	鈍
@@ -1360,7 +1360,8 @@ columns:
 ._ic	頁
 ._id	阜
 ._id	吻
-._ie	葺
+._ie	皇
+/_ie	葺
 ._if	芙
 ._if	鮒
 ._ig	斧
@@ -2269,7 +2270,7 @@ columns:
 ;_i;	略
 ;_ia	系
 ;_id	幹
-;_ie	希
+;_ie	られる
 ;_if	圧
 ;_ig	密
 ;_ij	析
@@ -2471,6 +2472,7 @@ columns:
 ;_u;	龍
 ;_ua	境
 ;_ud	喜
+;_ue	される
 ;_uf	苦
 ;_ug	絶
 ;_uj	星
