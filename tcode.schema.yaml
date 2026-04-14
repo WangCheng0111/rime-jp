@@ -76,7 +76,6 @@ key_binder:
     - { accept: period, when: has_menu, send: period } # 句号不触发下一页
     - { accept: Shift+space, toggle: full_shape, when: always }
     #- { accept: exclam, toggle: full_shape, when: always }
-    #- { accept: space, when: has_menu, send: underscore }  # tcodelua和这行同时开启一个就行，效果完全一样
 
 recognizer:
   import_preset: default
