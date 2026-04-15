@@ -48,7 +48,7 @@ speller:
   alphabet: 0123456789abcdefghijklmnopqrstuvwxyz;,./_
   #alphabet: 0123456789abcdefghijklmnopqrstuvwxyz;,.?_
   auto_select_pattern: ^(?:(?!fj|jf)[a-z0-9;,./]{2}|(?:jf|fj)[a-z0-9;,./]{2})$
-  #auto_select_pattern: ^(?:(?!fj|jf)[a-z0-9;,?]{2}|(?:jf|fj)[a-z0-9;,?]{2})$
+  #auto_select_pattern: ^(?:(?!fj|jf)[a-z0-9;,.?]{2}|(?:jf|fj)[a-z0-9;,.?]{2})$
 
 
 translator:
