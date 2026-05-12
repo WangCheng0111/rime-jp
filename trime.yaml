@@ -22,11 +22,11 @@ style:
   comment_text_size: 12 #編碼提示字號
   hanb_font: hanb.ttf #擴充字型
   horizontal: true #水平模式
-  horizontal_gap: 1 #鍵水平間距
+  horizontal_gap: 14 #鍵水平間距
   keyboard_padding: 1 #竖屏模式下，屏幕左右两侧与键盘的距离（曲面屏减少误触）
   keyboard_padding_left: 0 #竖屏屏模式下，左手键盘布局，屏幕左侧与键盘的距离
   keyboard_padding_right: 40 #竖屏屏模式下，左手键盘布局，屏幕右侧与键盘的距离
-  keyboard_padding_bottom: 40 #竖屏模式下，屏幕下边缘与键盘的距离（避免误触发全面屏手势）
+  keyboard_padding_bottom: 65 #竖屏模式下，屏幕下边缘与键盘的距离（避免误触发全面屏手势）
   keyboard_padding_land: 40 #横屏模式下，屏幕左右两侧与键盘的距离（避免横屏按键过度拉伸变形）
   keyboard_padding_land_bottom: 0 #横屏模式下，屏幕下侧与键盘的距离
   key_font: PingFangSC-Regular.ttf #鍵盤字型
@@ -52,7 +52,7 @@ style:
   symbol_text_size: 10 #符號字號
   text_font: latin.ttf #編碼字型
   vertical_correction: -10
-  vertical_gap: 1 #鍵盤行距
+  vertical_gap: 7 #鍵盤行距
   #background_folder: #背景图保存在background目录下的哪个子目录
   enter_label_mode: 0  #是否使用App提供的ActionLabel内容作为Enter键的文本（由于多数App没有适配ActionLable，实际影响不大）。0不使用，1只使用actionlabel，2优先使用，3当其他方式没有获得label时才读取actionlabel
   enter_labels:  # 定义Enter键的文本
