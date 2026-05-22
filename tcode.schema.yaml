@@ -16,6 +16,9 @@ switches:
   - name: full_shape
     reset: 0
     states: [ 半角, 全角 ]
+  - name: kata
+    states: [ 全片, 半片 ]
+    reset: 0
 
 engine:
   processors:
@@ -38,6 +41,7 @@ engine:
     - punct_translator
     - table_translator
   filters:
+    - simplifier@kata
     - uniquifier
 
 
@@ -50,6 +54,10 @@ speller:
   auto_select_pattern: ^(?:(?!fj|jf)[a-z0-9;,./]{2}|(?:jf|fj)[a-z0-9;,./]{2})$
   #auto_select_pattern: ^(?:(?!fj|jf)[a-z0-9;,.?]{2}|(?:jf|fj)[a-z0-9;,.?]{2})$
 
+kata:
+  option_name: kata
+  opencc_config: hira2kata.json
+  tags: [abc]
 
 translator:
   dictionary: tcode
@@ -74,8 +82,9 @@ key_binder:
     - { accept: F2, select: sapphire, when: always }
     - { accept: comma, when: has_menu, send: comma }  # 逗号不触发上一页
     - { accept: period, when: has_menu, send: period } # 句号不触发下一页
-    - { accept: Shift+space, toggle: full_shape, when: always }
+    #- { accept: Shift+space, toggle: full_shape, when: always }
     #- { accept: exclam, toggle: full_shape, when: always }
+    - { accept: Shift+space, toggle: kata, when: always }
 
 recognizer:
   import_preset: default

@@ -1,0 +1,16 @@
+{
+  "name": "Convert full-width Katakana to half-width Katakana",
+  "segmentation": {
+    "type": "mmseg",
+    "dict": {
+      "type": "ocd2",
+      "file": "dictionary.ocd2"
+    }
+  },
+  "conversion_chain": [{
+    "dict": {
+      "type": "ocd2",
+      "file": "dictionary.ocd2"
+    }
+  }]
+}
