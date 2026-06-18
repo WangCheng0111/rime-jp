@@ -72,8 +72,8 @@ translator:
   enable_completion: false
 
 punctuator:
-  import_preset: tcodesymbols
-  #import_preset: trimetcodesymbols
+  import_preset: tcodemymbols
+  #import_preset: trimetcodemymbols
 
 key_binder:
   import_preset: default
