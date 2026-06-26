@@ -89,7 +89,9 @@ key_binder:
 recognizer:
   import_preset: default
   patterns:
+    email: ""
     uppercase: "" #中文状态大写锁定直接上屏
+    url: ""
 
 ascii_composer:
   good_old_caps_lock: true
