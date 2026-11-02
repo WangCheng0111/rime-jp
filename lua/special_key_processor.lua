@@ -1,6 +1,8 @@
 -- special_key_processor.lua
 -- 用于处理分号、单引号、小写z和数字0-9的特殊行为
 
+local kNoop = 2
+
 -- 主处理函数
 local function special_key_processor(key_event, env)
   -- 忽略控制键、释放事件等
