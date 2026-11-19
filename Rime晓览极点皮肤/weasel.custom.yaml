@@ -1,0 +1,76 @@
+# ============================================================
+# 小狼毫皮肤：晓览极点（复刻极点「史上最简洁皮肤」）
+# 用法：保存为 %APPDATA%\Rime\weasel.custom.yaml，然后「重新部署」
+# ============================================================
+# 依据极点 skin.ini [候选窗-单行]：
+#   候选窗背景色 = 255,255,200   候选窗边框色 = 0,0,0（1px）
+#   候选汉字颜色 = 0,0,0         候选窗提示色 = 255,128,0
+#   自动词组色   = 0,128,0       字体 = 宋体 12.00
+#   圆角 0 / 透明度 0 / 无渐变 / 无背景图 / 单行
+# 小狼毫颜色用 BGR（0xBBGGRR），已换算：
+#   #FFFFC8 → 0xC8FFFF    #FF8000 → 0x0080FF    #008000 → 0x008000
+# ============================================================
+
+patch:
+  # ---------------- 配色 ----------------
+  "preset_color_schemes/+":
+    xiaolan:
+      name: 晓览极点／Xiaolan
+      author: 晓览（极点皮肤）→ 小狼毫复刻
+      # 窗口
+      back_color: 0xC8FFFF              # 背景 #FFFFC8 黄
+      border_color: 0x000000            # 边框 #000000
+      shadow_color: 0x00000000          # 无阴影
+      # 编码（候选窗内那行）
+      text_color: 0x0080FF              # #FF8000 橙
+      hilited_text_color: 0x0080FF
+      hilited_back_color: 0xC8FFFF      # 编码区无底色块
+      hilited_shadow_color: 0x00000000
+      # 候选字
+      candidate_text_color: 0x000000    # 普通候选黑
+      candidate_back_color: 0xC8FFFF
+      candidate_shadow_color: 0x00000000
+      hilited_candidate_text_color: 0x008000   # 选中候选绿 #008000
+      hilited_candidate_back_color: 0xC8FFFF   # 选中项不加底色块
+      hilited_candidate_shadow_color: 0x00000000
+      # 序号
+      label_color: 0x000000             # 普通序号黑
+      hilited_label_color: 0x008000     # 选中序号绿
+      # 其他
+      comment_text_color: 0x000000
+
+  # ---------------- 样式 ----------------
+  "style/color_scheme": xiaolan
+  "style/color_scheme_dark": xiaolan
+  "style/font_face": "Dream Han Sans SC"
+  "style/font_point": 12
+  "style/label_font_face": "Dream Han Sans SC"
+  "style/label_font_point": 12
+  "style/comment_font_face": "Dream Han Sans SC"
+  "style/comment_font_point": 12
+  "style/horizontal": true
+  "style/inline_preedit": true
+  "style/preedit_type": composition
+  "style/label_format": "%s "
+  "style/mark_text": ""
+  "style/antialias_mode": default
+  "style/display_tray_icon": false
+  "style/layout/border_width": 1
+  "style/layout/corner_radius": 0
+  "style/layout/round_corner": 0
+  "style/layout/shadow_radius": 0
+  "style/layout/shadow_offset_x": 0
+  "style/layout/shadow_offset_y": 0
+  "style/layout/margin_x": 6
+  "style/layout/margin_y": 4
+  "style/layout/spacing": 10
+  "style/layout/candidate_spacing": 12
+  "style/layout/hilite_spacing": 4
+  "style/layout/hilite_padding": 0
+  "style/layout/hilite_padding_x": 0
+  "style/layout/min_width": 0
+  "style/layout/max_width": 0
+  "style/layout/min_height": 0
+  "style/layout/max_height": 0
+  "style/layout/linespacing": 0
+  "style/layout/baseline": 0

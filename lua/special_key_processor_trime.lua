@@ -1,63 +1,65 @@
--- special_key_processor.lua
--- 用于处理分号、叹号、小写z和数字0-9的特殊行为
+-- special_key_processor_trime.lua
+-- 处理分号、叹号、小写 z 和数字 0-9 的特殊行为（TRIME / 同文输入法）
+-- 返回值：kNoop(2) = 不处理，继续往下传；kAccepted(1) = 吞掉这个键
 
 local kNoop = 2
+local kAccepted = 1
 
--- 主处理函数
+-- 有候选时选中第 index 个候选并上屏
+local function commit_index(context, index)
+  if not context:has_menu() then
+    return false
+  end
+  context:select(index)
+  context:commit()
+  return true
+end
+
+-- 分号 / 叹号专用：上屏第 index 个候选；上屏后菜单消失就吞掉这个标点键
+local function commit_punct(context, index)
+  context:select(index)
+  context:commit()
+  if not context:has_menu() then
+    return kAccepted
+  end
+  return nil
+end
+
 local function special_key_processor(key_event, env)
-  -- 忽略控制键、释放事件等
-  if key_event:ctrl() or key_event:alt() or key_event:release() or key_event:shift() or key_event:caps() then
+  -- 忽略控制键、修饰键、抬起事件
+  if key_event:ctrl() or key_event:alt() or key_event:release()
+     or key_event:shift() or key_event:caps() then
     return kNoop
   end
 
   local context = env.engine.context
   local key_repr = key_event:repr()
 
-  -- 检查是否为数字键0-9
-  local is_number = key_repr:match("^[0-9]$")
-  if is_number then
-    -- 如果有候选菜单，则顶屏
-    if context:has_menu() then
-      -- 选择第一个候选并上屏
-      context:select(0)  -- 索引从0开始，0表示第一个候选
-      context:commit()
-      return kNoop  -- 继续处理，允许输出数字键本身
-    else
-      -- 如果没有候选菜单，保持原样
-      return kNoop  -- 继续处理
-    end
+  -- 数字 0-9：有候选就顶屏第一个
+  local code = key_repr:byte()
+  if code and #key_repr == 1 and code >= 0x30 and code <= 0x39 then
+    commit_index(context, 0)
+    return kNoop
   end
 
-  -- 检查是否为小写z键
+  -- 小写 z：编码以 z 开头时不顶屏；否则有候选就顶屏
   if key_repr == "z" then
-    -- 排除zz顶屏：如果编码区有且只有一个字符"z"，则不顶屏
-    local input = context.input or ""
-    if input == "z" then
-      return kNoop  -- 保持原样，不顶屏
-    end
-    -- 如果有候选菜单，则顶屏
-    if context:has_menu() then
-      -- 选择第一个候选并上屏
-      context:select(0)  -- 索引从0开始，0表示第一个候选
+    if context:has_menu() and (context.input or ""):sub(1, 1) ~= "z" then
+      context:select(0)
       context:commit()
-      return kNoop  -- 继续处理，允许输出z键本身
-    else
-      -- 如果没有候选菜单，保持原样
-      return kNoop  -- 继续处理
     end
+    return kNoop
   end
 
-  -- 仅处理分号和叹号
+  -- 其余按键只处理分号和叹号
   if key_repr ~= "semicolon" and key_repr ~= "exclam" then
-    return kNoop  -- 继续处理
+    return kNoop
   end
-
-  -- 如果没有候选菜单，继续正常处理
   if not context:has_menu() then
-    return kNoop  -- 继续处理
+    return kNoop
   end
 
-  -- 获取候选数量
+  -- 候选数量
   local candidate_count = 0
   local composition = context.composition
   if composition and not composition:empty() then
@@ -67,43 +69,20 @@ local function special_key_processor(key_event, env)
     end
   end
 
-  -- 处理分号键和叹号键的特殊逻辑
-  if key_repr == "semicolon" or key_repr == "exclam" then
-    if candidate_count == 1 then
-      -- 只有一个候选时，直接让系统处理（自动上屏第一候选+输出标点）
-      return kNoop
-    elseif candidate_count == 2 then
-      if key_repr == "semicolon" then
-        -- 两个候选时，分号选择第二个候选
-        context:select(1)  -- 索引从0开始，1表示第二个候选
-        context:commit()
-        if not context:has_menu() then
-          return 1  -- 屏蔽分号本身的输出
-        end
-      else  -- exclam
-        -- 两个候选时，叹号直接让系统处理（自动上屏第一候选+输出标点）
-        return kNoop
-      end
-    else  -- candidate_count >= 3
-      if key_repr == "semicolon" then
-        -- 三个及以上候选时，分号选择第二个候选
-        context:select(1)  -- 索引从0开始，1表示第二个候选
-        context:commit()
-        if not context:has_menu() then
-          return 1  -- 屏蔽分号本身的输出
-        end
-      else  -- exclam
-        -- 三个及以上候选时，叹号选择第三个候选
-        context:select(2)  -- 索引从0开始，2表示第三个候选
-        context:commit()
-        if not context:has_menu() then
-          return 1  -- 屏蔽叹号本身的输出
-        end
-      end
-    end
+  if candidate_count == 1 then
+    return kNoop
   end
 
-  return kNoop  -- 继续处理
+  -- 分号：2 个及以上候选 → 选第二个
+  if key_repr == "semicolon" then
+    return commit_punct(context, 1) or kNoop
+  end
+
+  -- 叹号：2 个候选交给系统；3 个及以上 → 选第三个
+  if candidate_count == 2 then
+    return kNoop
+  end
+  return commit_punct(context, 2) or kNoop
 end
 
 return special_key_processor
