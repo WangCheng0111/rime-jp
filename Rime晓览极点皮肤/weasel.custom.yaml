@@ -42,11 +42,11 @@ patch:
   # ---------------- 样式 ----------------
   "style/color_scheme": xiaolan
   "style/color_scheme_dark": xiaolan
-  "style/font_face": "Dream Han Sans SC"
+  "style/font_face": "Dream Han Sans SC:medium, Noto Serif Hentaigana"
   "style/font_point": 12
-  "style/label_font_face": "Dream Han Sans SC"
+  "style/label_font_face": "Dream Han Sans SC:medium"
   "style/label_font_point": 12
-  "style/comment_font_face": "Dream Han Sans SC"
+  "style/comment_font_face": "Dream Han Sans SC:medium"
   "style/comment_font_point": 12
   "style/horizontal": true
   "style/inline_preedit": true
